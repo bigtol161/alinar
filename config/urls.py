@@ -31,3 +31,9 @@ from django.contrib import admin as _admin
 _admin.site.site_header = 'Дом услуг — панель управления'
 _admin.site.site_title = 'Дом услуг'
 _admin.site.index_title = 'Управление сайтом'
+
+# Страница политики конфиденциальности
+from django.views.generic import TemplateView
+urlpatterns += [
+    path('privacy/', TemplateView.as_view(template_name='news/privacy.html'), name='privacy'),
+]

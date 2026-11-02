@@ -1,11 +1,17 @@
 from django import forms
 from django.core.validators import RegexValidator
+
 from .models import Lead
 
 
 phone_validator = RegexValidator(
     regex=r'^\+?[\d\s\-]{10,18}$',
     message='Похоже, номер неполный — проверьте его.',
+)
+
+CONSENT_LABEL = (
+    'Я согласен с <a href="/privacy/" target="_blank">'
+    'обработкой персональных данных</a>'
 )
 
 
@@ -18,6 +24,12 @@ class LeadForm(forms.ModelForm):
             'placeholder': '+7 ___ ___-__-__',
             'class': 'lead-input',
         }),
+    )
+    consent = forms.BooleanField(
+        required=True,
+        label=CONSENT_LABEL,
+        error_messages={'required': 'Без согласия на обработку данных заявку отправить нельзя.'},
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
     )
 
     class Meta:

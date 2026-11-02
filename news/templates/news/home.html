@@ -13,6 +13,9 @@
       Проверенные мастера по сантехнике, электрике и ремонту — и полезные статьи о быте.
       Затопили соседи или погас свет? Найдите исполнителя рядом.
     </p>
+    <p class="mb-3 ya-muted small">
+      В Ростове-на-Дону сейчас {{ masters }} проверенных мастеров.
+    </p>
     <div class="d-flex justify-content-center gap-2 flex-wrap">
       <a href="{% url 'news:executor_list' %}" class="ya-btn text-decoration-none">Найти мастера</a>
       {% if user.is_authenticated %}

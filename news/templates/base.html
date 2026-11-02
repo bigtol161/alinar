@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}Дом услуг — статьи и мастера{% endblock %}</title>
   <meta name="description" content="{% block description %}Дом услуг в Ростове-на-Дону: проверенные мастера по сантехнике и электрике, полезные статьи о ремонте и быте. Затопили соседи, нужен электрик — найдите исполнителя рядом.{% endblock %}">
-  <meta property="og:site_name" content="Алинар — Дом услуг">
+  <meta property="og:site_name" content="Дом услуг">
   <meta property="og:type" content="website">
   <meta property="og:title" content="{% block og_title %}Дом услуг — статьи и мастера{% endblock %}">
   <meta property="og:description" content="{% block og_description %}Проверенные мастера по сантехнике и электрике и полезные статьи о ремонте в Ростове-на-Дону.{% endblock %}">
@@ -42,7 +42,11 @@
       <input type="text" name="q" class="form-control"
              placeholder="Статьи, услуги, мастера">
     </form>
-    <a href="{% url 'news:register' %}" class="ya-btn text-decoration-none">Стать исполнителем</a>
+    {% if user.is_authenticated %}
+      <a href="{% url 'news:executor_leads' %}" class="ya-btn text-decoration-none">Кабинет исполнителя</a>
+    {% else %}
+      <a href="{% url 'news:register' %}" class="ya-btn text-decoration-none">Стать исполнителем</a>
+    {% endif %}
     <button class="ya-burger d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#mobileMenu" aria-controls="mobileMenu" aria-expanded="false" aria-label="Меню">
       <span></span><span></span><span></span>
     </button>
@@ -93,6 +97,7 @@
       <div class="col-md-6 text-md-end">
         <a href="{% url 'news:article_list' %}" class="text-decoration-none me-3">Статьи</a>
         <a href="{% url 'news:executor_list' %}" class="text-decoration-none">Исполнители</a>
+        <a href="/privacy/" class="text-decoration-none ms-3">Конфиденциальность</a>
       </div>
     </div>
   </div>

@@ -260,3 +260,8 @@ html { scrollbar-gutter: stable; overflow-y: scroll; }
 /* Выравнивание карточек */
 .ya-card.h-100 { display: flex; flex-direction: column; }
 .ya-card.h-100 .card-body { flex: 1 1 auto; }
+
+/* Запираем stretched-link внутри карточек */
+.ya-card {
+  position: relative;
+}

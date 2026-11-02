@@ -39,6 +39,7 @@ def home(request):
         'popular_services': popular_services,
         'fresh_orders': fresh_orders,
         'total': Article.objects.filter(is_published=True).count(),
+        'masters': Executor.objects.filter(is_active=True).count(),
     }
     return render(request, 'news/home.html', context)
 
