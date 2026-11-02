@@ -4,7 +4,7 @@
   --ya-bg-soft: #f5f5f7;       /* светло-серые секции */
   --ya-card: #ffffff;          /* фон карточки */
   --ya-text: #21201f;          /* основной текст */
-  --ya-text-muted: #55555f;    /* серые подписи */
+  --ya-text-muted: #3a3a42;    /* серые подписи */
   --ya-accent: #fdd928;        /* фирменный жёлтый */
   --ya-accent-hover: #f2c911;
   --ya-line: #e8e8ea;          /* тонкие разделители */
@@ -268,7 +268,7 @@ html { scrollbar-gutter: stable; overflow-y: scroll; }
 
 /* Футер: читаемый текст и живые ссылки */
 body > footer { border-top: 1px solid rgba(0, 0, 0, .08); }
-body > footer .ya-muted { color: #55555f; }
+body > footer .ya-muted { color: #3a3a42; }
 body > footer a {
   display: inline-block;
   padding: 6px 14px;
