@@ -284,3 +284,19 @@ body > footer a:hover {
   color: #1a1a1a !important;
   transform: translateY(-1px);
 }
+
+/* Чипы услуг на главной: фирменные, вместо серых */
+.ya-chip {
+  background: #fff9e0;
+  border: 1px solid #ffe58a;
+  color: #1a1a1a !important;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 999px;
+  transition: background .15s ease, border-color .15s ease, transform .15s ease;
+}
+.ya-chip:hover {
+  background: #ffdb4d;
+  border-color: #f5c900;
+  transform: translateY(-1px);
+}
