@@ -30,6 +30,7 @@
         {{ form.password2 }}
         {% for error in form.password2.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
       </div>
+      <div class="mb-3 form-check">{% if form.consent.errors %}<div class="text-danger small">{% for error in form.consent.errors %}{{ error }} {% endfor %}</div>{% endif %}{{ form.consent }}<label class="form-check-label" for="{{ form.consent.id_for_label }}">Согласие на обработку персональных данных</label></div>
       <button type="submit" class="ya-btn">Создать аккаунт</button>
       <a href="{% url 'login' %}" class="ms-3 text-decoration-none">Уже есть аккаунт? Войти</a>
     </form>

@@ -25,6 +25,12 @@ class LeadForm(forms.ModelForm):
             'class': 'lead-input',
         }),
     )
+    # Honeypot: человек поле не видит, бот заполнит — заявка уйдёт мимо
+    website = forms.CharField(
+        required=False,
+        label='',
+        widget=forms.HiddenInput(attrs={'autocomplete': 'off', 'tabindex': '-1'}),
+    )
     consent = forms.BooleanField(
         required=True,
         label=CONSENT_LABEL,

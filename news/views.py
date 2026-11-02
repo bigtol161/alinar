@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from core.models import City, Service
 from orders.models import Order
 from .forms import LeadForm
+from accounts.rate_limit import rate_limit
 from .models import Article, Executor, Lead
 
 import logging
@@ -115,11 +116,15 @@ def executor_list(request):
     })
 
 
+@rate_limit('lead', limit=5, per=3600)
 def executor_detail(request, slug):
     """Анкета исполнителя + форма заявки."""
     executor = get_object_or_404(Executor, slug=slug, is_active=True)
 
     if request.method == 'POST':
+        if request.POST.get('website'):
+            # Заполнил honeypot — бот; молча возвращаем на страницу анкеты
+            return redirect('news:executor_detail', slug=executor.slug)
         form = LeadForm(request.POST)
         if form.is_valid():
             lead = form.save(commit=False)

@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import OrderForm, ResponseForm
+from accounts.rate_limit import rate_limit
 from .models import Order
 
 
@@ -45,9 +46,13 @@ def order_detail(request, pk):
 
 
 @login_required
+@rate_limit('order', limit=5, per=3600)
 def order_create(request):
     """Разместить заказ может только зарегистрированный пользователь."""
     if request.method == 'POST':
+        if request.POST.get('website'):
+            # Заполнил honeypot — бот; показываем пустую форму снова
+            return render(request, 'orders/order_form.html', {'form': OrderForm()})
         form = OrderForm(request.POST)
         if form.is_valid():
             order = form.save(commit=False)

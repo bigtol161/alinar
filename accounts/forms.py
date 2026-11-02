@@ -8,6 +8,12 @@ CONSENT_LABEL = (
 
 
 class RegisterForm(UserCreationForm):
+    # Honeypot: человек поле не видит, бот честолюбиво заполнит — и отсечётся
+    website = forms.CharField(
+        required=False,
+        label='',
+        widget=forms.HiddenInput(attrs={'autocomplete': 'off', 'tabindex': '-1'}),
+    )
     consent = forms.BooleanField(
         required=True,
         label=CONSENT_LABEL,
