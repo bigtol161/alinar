@@ -15,6 +15,7 @@
     </p>
     <p class="mb-3 ya-muted small">
       В Ростове-на-Дону сейчас {{ masters }} проверенных мастеров.
+      {% if done_leads >= 20 %}За всё время мастера закрыли {{ done_leads }} заявок.{% endif %}
     </p>
     <div class="d-flex justify-content-center gap-2 flex-wrap">
       <a href="{% url 'news:executor_list' %}" class="ya-btn text-decoration-none">Найти мастера</a>
@@ -62,7 +63,9 @@
 
 {% if popular_services %}
 <div class="mb-4">
-  <h2 class="h5 mb-2">Популярные услуги</h2>
+  {# Крупный «продающий» заголовок над выбором услуг — как на Яндекс.Услугах и Профи.ру #}
+  <h2 class="mb-1" style="font-size: 1.5rem; font-weight: 800;">Найдите мастера в вашем городе</h2>
+  <p class="ya-muted small mb-2">Выберите услугу — покажем анкеты исполнителей:</p>
   <div class="d-flex flex-wrap gap-2">
     {% for s in popular_services %}
       <a href="{% url 'news:executor_list' %}?service={{ s.pk }}"

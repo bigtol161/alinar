@@ -41,6 +41,9 @@ def home(request):
         'fresh_orders': fresh_orders,
         'total': Article.objects.filter(is_published=True).count(),
         'masters': Executor.objects.filter(is_active=True).count(),
+        # Счётчик показываем, только когда заявок накопилось достаточно (порог в шаблоне),
+        # чтобы рядом с «30 мастеров» не красовалась унылая «3 заявки».
+        'done_leads': Lead.objects.filter(status='done').count(),
     }
     return render(request, 'news/home.html', context)
 
