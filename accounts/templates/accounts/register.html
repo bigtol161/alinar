@@ -13,6 +13,9 @@
     исполнителя в панели управления. После этого заявки заказчиков будут приходить вам
     в раздел «Мои заявки» на анкете.</p>
 
+    <p class="mb-3 fw-bold">Заявки приходят вам бесплатно — никаких процентов с заказа.</p>
+
+    {# novalidate отключает браузерную проверку — ошибки показывает наш стиль, красным под полями #}
     <form method="post" novalidate>
       {% csrf_token %}
       <div class="mb-3">
@@ -30,6 +33,7 @@
         {{ form.password2 }}
         {% for error in form.password2.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
       </div>
+      {# Блок согласия: ошибка — выше чекбокса, чтобы человек сразу видел, чего не хватает #}
       <div class="mb-3 form-check">{% if form.consent.errors %}<div class="text-danger small">{% for error in form.consent.errors %}{{ error }} {% endfor %}</div>{% endif %}{{ form.consent }}<label class="form-check-label" for="{{ form.consent.id_for_label }}">Согласие на обработку персональных данных</label></div>
       <button type="submit" class="ya-btn">Создать аккаунт</button>
       <a href="{% url 'login' %}" class="ms-3 text-decoration-none">Уже есть аккаунт? Войти</a>

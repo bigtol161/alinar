@@ -1,3 +1,11 @@
+"""
+Регистрация исполнителей.
+
+Сценарий: новый исполнитель заводит аккаунт и сразу входит на сайт.
+Защита от ботов двухступенчатая: скрытое поле-ловушка (honeypot) в форме
+плюс лимит частоты отправок с одного IP (см. accounts/rate_limit.py).
+"""
+
 from django.contrib.auth import login
 from django.shortcuts import redirect, render
 
@@ -5,6 +13,7 @@ from .forms import RegisterForm
 from .rate_limit import rate_limit
 
 
+# Не больше 3 регистраций в час с одного IP — человеку хватает с запасом.
 @rate_limit('register', limit=3, per=3600)
 def register(request):
     """Регистрация нового пользователя с автоматическим входом после создания."""

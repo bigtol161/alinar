@@ -1,7 +1,18 @@
+"""
+Формы раздела заказов.
+
+- OrderForm — заказчик описывает, что нужно сделать: где, за сколько,
+  как с ним связаться. Согласие на обработку данных обязательно.
+- ResponseForm — отклик исполнителя на чужой заказ: сообщение и цена.
+  Доступна только вошедшим исполнителям, от спама защищена тем,
+  что анонимов отсеивает регистрация.
+"""
+
 from django import forms
 
 from .models import Order, Response
 
+# Текст чекбокса согласия со ссылкой на политику (страница /privacy/).
 CONSENT_LABEL = (
     'Я согласен с <a href="/privacy/" target="_blank">'
     'обработкой персональных данных</a>'
@@ -9,17 +20,17 @@ CONSENT_LABEL = (
 
 
 class OrderForm(forms.ModelForm):
-    # Honeypot: человек поле не видит, бот заполнит — заявка уйдёт мимо
-    website = forms.CharField(
-        required=False,
-        label='',
-        widget=forms.HiddenInput(attrs={'autocomplete': 'off', 'tabindex': '-1'}),
-    )
     consent = forms.BooleanField(
         required=True,
         label=CONSENT_LABEL,
         error_messages={'required': 'Без согласия на обработку данных заказ не размещается.'},
         widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+    )
+    # Honeypot: человек поле не видит, бот заполнит — заказ уйдёт мимо.
+    website = forms.CharField(
+        required=False,
+        label='',
+        widget=forms.HiddenInput(attrs={'autocomplete': 'off', 'tabindex': '-1'}),
     )
 
     class Meta:

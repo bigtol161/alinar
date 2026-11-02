@@ -1,14 +1,24 @@
+"""
+Форма заявки исполнителю («оставить заявку» в анкете мастера).
+
+Поля: имя, телефон, сообщение, согласие на обработку данных
+и скрытая ловушка website для ботов.
+"""
+
 from django import forms
 from django.core.validators import RegexValidator
 
 from .models import Lead
 
 
+# Телефон считаем «похожим на телефон»: плюс/цифры/пробелы/дефисы, 10–18 знаков.
+# Жёсткую маску не ставим — люди пишут номера по-разному, а нам важнее не потерять клиента.
 phone_validator = RegexValidator(
     regex=r'^\+?[\d\s\-]{10,18}$',
     message='Похоже, номер неполный — проверьте его.',
 )
 
+# Текст чекбокса согласия со ссылкой на политику (страница /privacy/).
 CONSENT_LABEL = (
     'Я согласен с <a href="/privacy/" target="_blank">'
     'обработкой персональных данных</a>'
@@ -25,17 +35,17 @@ class LeadForm(forms.ModelForm):
             'class': 'lead-input',
         }),
     )
-    # Honeypot: человек поле не видит, бот заполнит — заявка уйдёт мимо
-    website = forms.CharField(
-        required=False,
-        label='',
-        widget=forms.HiddenInput(attrs={'autocomplete': 'off', 'tabindex': '-1'}),
-    )
     consent = forms.BooleanField(
         required=True,
         label=CONSENT_LABEL,
         error_messages={'required': 'Без согласия на обработку данных заявку отправить нельзя.'},
         widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+    )
+    # Honeypot: человек поле не видит, бот заполнит — заявка уйдёт мимо.
+    website = forms.CharField(
+        required=False,
+        label='',
+        widget=forms.HiddenInput(attrs={'autocomplete': 'off', 'tabindex': '-1'}),
     )
 
     class Meta:

@@ -50,6 +50,13 @@
         {{ form.description }}
         {% for error in form.description.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
       </div>
+      {# Скрытое поле-ловушка для ботов + чекбокс согласия (обязателен) #}
+      {{ form.website }}
+      <div class="mb-3 form-check">
+        {{ form.consent }}
+        <label class="form-check-label" for="{{ form.consent.id_for_label }}">Согласие на обработку персональных данных</label>
+        {% for error in form.consent.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+      </div>
       <button type="submit" class="ya-btn">Разместить заказ</button>
     </form>
 
