@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Мои заявки — Дом услуг{% endblock %}
+
+{% block content %}
+
+<h1 class="mb-4" style="font-size: 1.6rem; font-weight: 800;">Мои заявки</h1>
+
+{% if leads %}
+  {% for lead in leads %}
+    <div class="ya-card mb-3">
+      <div class="card-body p-4">
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-2">
+          <h2 class="h5 fw-bold mb-0">{{ lead.executor.name }}</h2>
+          <span class="ya-chip">{{ lead.get_status_display }}</span>
+        </div>
+        <div class="ya-muted small mb-2">Отправлена: {{ lead.created_at|date:"d.m.Y H:i" }}</div>
+        <div class="mb-1">Контакт: {{ lead.phone }}</div>
+        {% if lead.message %}
+          <div class="mt-2 article-content">{{ lead.message }}</div>
+        {% endif %}
+      </div>
+    </div>
+  {% endfor %}
+{% else %}
+  <div class="ya-card">
+    <div class="card-body p-4 p-md-5 text-center">
+      <p class="mb-0">Заявок пока нет. Найдите подходящего исполнителя и отправьте первую заявку.</p>
+    </div>
+  </div>
+{% endif %}
+
+{% endblock %}

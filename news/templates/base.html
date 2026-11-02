@@ -1,0 +1,103 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Дом услуг — статьи и мастера{% endblock %}</title>
+  <meta name="description" content="{% block description %}Дом услуг в Ростове-на-Дону: проверенные мастера по сантехнике и электрике, полезные статьи о ремонте и быте. Затопили соседи, нужен электрик — найдите исполнителя рядом.{% endblock %}">
+  <meta property="og:site_name" content="Алинар — Дом услуг">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{% block og_title %}Дом услуг — статьи и мастера{% endblock %}">
+  <meta property="og:description" content="{% block og_description %}Проверенные мастера по сантехнике и электрике и полезные статьи о ремонте в Ростове-на-Дону.{% endblock %}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
+  <link href="{% static 'css/theme.css' %}" rel="stylesheet">
+</head>
+<body>
+
+<header class="ya-header py-2">
+  <div class="container d-flex align-items-center gap-3">
+    <a href="/" class="ya-logo">Дом услуг</a>
+    <nav class="ya-nav d-none d-md-flex gap-3">
+      <a href="{% url 'news:article_list' %}" class="text-decoration-none text-body">Статьи</a>
+      <a href="{% url 'news:executor_list' %}" class="text-decoration-none text-body">Исполнители</a>
+      {% if user.is_authenticated %}
+        <a href="{% url 'news:my_leads' %}" class="text-decoration-none text-body">Мои заявки</a>
+        <a href="{% url 'orders:list' %}" class="text-decoration-none text-body">Заказы</a>
+      {% endif %}
+      {% if user.is_authenticated %}
+        <span class="text-body">Привет, {{ user.username }}</span>
+        <form method="post" action="{% url 'news:logout' %}" class="d-inline">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-link btn-sm text-decoration-none text-body p-0 align-baseline">Выйти</button>
+        </form>
+      {% else %}
+        <a href="{% url 'login' %}" class="text-decoration-none text-body">Войти</a>
+      {% endif %}
+    </nav>
+    <form action="{% url 'news:article_list' %}" method="get" class="ya-search flex-grow-1 d-none d-md-block">
+      <input type="text" name="q" class="form-control"
+             placeholder="Статьи, услуги, мастера">
+    </form>
+    <a href="{% url 'news:register' %}" class="ya-btn text-decoration-none">Стать исполнителем</a>
+    <button class="ya-burger d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#mobileMenu" aria-controls="mobileMenu" aria-expanded="false" aria-label="Меню">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="collapse" id="mobileMenu">
+    <div class="container d-md-none py-2">
+      <form action="{% url 'news:article_list' %}" method="get" class="mb-2">
+        <input type="text" name="q" class="form-control" placeholder="Статьи, услуги, мастера">
+      </form>
+      <nav class="d-flex gap-3 pb-1">
+        <a href="{% url 'news:article_list' %}" class="text-decoration-none text-body">Статьи</a>
+        <a href="{% url 'news:executor_list' %}" class="text-decoration-none text-body">Исполнители</a>
+      {% if user.is_authenticated %}
+        <a href="{% url 'news:my_leads' %}" class="text-decoration-none text-body">Мои заявки</a>
+      {% endif %}
+      {% if user.is_authenticated %}
+        <span class="text-body">Привет, {{ user.username }}</span>
+        <form method="post" action="{% url 'news:logout' %}" class="d-inline">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-link btn-sm text-decoration-none text-body p-0 align-baseline">Выйти</button>
+        </form>
+      {% else %}
+        <a href="{% url 'login' %}" class="text-decoration-none text-body">Войти</a>
+      {% endif %}
+      </nav>
+    </div>
+  </div>
+</header>
+
+{% if messages %}
+  <div class="container mt-3">
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+<main class="container py-4">
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="mt-5 py-4" style="background: var(--ya-bg-soft);">
+  <div class="container ya-muted">
+    <div class="row">
+      <div class="col-md-6">
+        <strong class="text-body">Дом услуг</strong> — статьи и анкеты исполнителей в Ростове-на-Дону
+      </div>
+      <div class="col-md-6 text-md-end">
+        <a href="{% url 'news:article_list' %}" class="text-decoration-none me-3">Статьи</a>
+        <a href="{% url 'news:executor_list' %}" class="text-decoration-none">Исполнители</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

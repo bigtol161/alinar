@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Статьи — Алинар{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h3 mb-0">Статьи</h1>
+  <span class="ya-muted">Всего: {{ articles|length }}</span>
+</div>
+
+<div class="mb-4 d-flex flex-wrap gap-2">
+  <a href="?{% if query %}q={{ query|urlencode }}{% endif %}"
+     class="ya-chip {% if not rubric %}ya-chip-active{% endif %} text-decoration-none">Все</a>
+  {% for r in rubrics %}
+    <a href="?{% if query %}q={{ query|urlencode }}&amp;{% endif %}rubric={{ r.value }}"
+       class="ya-chip {% if rubric == r.value %}ya-chip-active{% endif %} text-decoration-none">{{ r.label }}</a>
+  {% endfor %}
+</div>
+
+<div class="row g-3">
+  {% for article in articles %}
+  <div class="col-12 col-md-6 col-lg-4">
+    <div class="ya-card h-100">
+      <div class="card-body">
+        {% if article.get_rubric_display %}
+          <span class="ya-muted small">{{ article.category }}</span>
+        {% endif %}
+        <h2 class="h5 mt-1 mb-2">
+          <a href="{% url 'news:article_detail' article.slug %}"
+             class="text-decoration-none text-body stretched-link">{{ article.title }}</a>
+        </h2>
+        {% if article.short_description %}
+          <p class="ya-muted mb-2">{{ article.short_description|truncatewords:20 }}</p>
+        {% endif %}
+        {% if article.created_at %}
+          <div class="ya-muted small">{{ article.created_at|date:"d.m.Y" }}</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <div class="col-12"><p class="ya-muted">Статей пока нет — добавьте первую в админке.</p></div>
+  {% endfor %}
+</div>
+{% endblock %}

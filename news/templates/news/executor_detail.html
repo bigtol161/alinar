@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}{{ executor.name }} — Дом услуг{% endblock %}
+{% block description %}Мастер в Ростове-на-Дону. {{ executor.description|truncatechars:150 }}{% endblock %}
+{% block og_title %}{{ executor.name }} — Алинар{% endblock %}
+{% block og_description %}Мастер в Ростове-на-Дону. {{ executor.description|truncatechars:150 }}{% endblock %}
+
+{% block content %}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "{{ executor.name|striptags|escapejs }}",
+  {% if executor.phone %}"telephone": "{{ executor.phone|striptags }}",{% endif %}
+  "url": "{{ request.build_absolute_uri }}"{% if executor.city %},
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "{{ executor.city.name }}"
+  },
+  "areaServed": "{{ executor.city.name }}"{% endif %}{% if executor.services.all %},
+  "makesOffer": [{% for service in executor.services.all %}{"@type": "Offer", "itemOffered": {"@type": "Service", "name": "{{ service|striptags }}"}}{% if not forloop.last %},{% endif %}{% endfor %}]{% endif %}
+}
+</script>
+
+<div class="ya-card">
+  <div class="card-body p-4 p-md-5">
+
+    {% if executor.photo %}
+      <img src="{{ executor.photo.url }}" class="img-fluid rounded mb-3" style="max-height: 280px; object-fit: cover;" alt="{{ executor.name }}">
+    {% endif %}
+
+    {% if executor.city %}
+      <span class="ya-chip">{{ executor.city.name }}</span>
+    {% endif %}
+
+    <h1 class="mt-2 mb-3" style="font-size: 1.8rem; font-weight: 800;">
+      {{ executor.name }}
+    </h1>
+
+    {% if executor.services.all %}
+      <div class="d-flex flex-wrap gap-2 mb-4">
+        {% for service in executor.services.all %}
+          <span class="ya-chip">{{ service }}</span>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if executor.description %}
+      <div class="article-content mb-4">
+        {{ executor.description|linebreaks }}
+      </div>
+    {% else %}
+      <p class="ya-muted">Описание пока не заполнено.</p>
+    {% endif %}
+
+    <div class="mb-4 pt-3" style="border-top: 1px solid var(--ya-border, #ececf0);">
+      <h2 class="h5 fw-bold mb-2">Оставить заявку</h2>
+      <p class="ya-muted mb-3">Опишите задачу — мастер свяжется с вами по телефону.</p>
+      <form method="post" novalidate>
+        {% csrf_token %}
+        <div class="row g-2">
+          <div class="col-md-5">
+            {{ form.name }}
+            {% for error in form.name.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+          </div>
+          <div class="col-md-4">
+            {{ form.phone }}
+            {% for error in form.phone.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+          </div>
+          <div class="col-12 mt-2">
+            {{ form.message }}
+            {% for error in form.message.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+          </div>
+          <div class="col-md-3">
+            <button type="submit" class="ya-btn w-100">Отправить заявку</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="d-flex flex-wrap gap-2 pt-3" style="border-top: 1px solid var(--ya-border, #ececf0);">
+      {% if executor.phone %}
+        <a href="tel:{{ executor.phone|cut:' '|cut:'-'|cut:'(' |cut:')' }}"
+           class="ya-btn text-decoration-none">Позвонить: {{ executor.phone }}</a>
+      {% endif %}
+      <a href="{% url 'news:executor_list' %}" class="text-decoration-none align-self-center ms-2">← Все исполнители</a>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

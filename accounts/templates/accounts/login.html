@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Вход — Дом услуг{% endblock %}
+
+{% block content %}
+
+<h1 class="mb-3" style="font-size: 1.6rem; font-weight: 800;">Вход</h1>
+
+<div class="ya-card">
+  <div class="card-body p-4 p-md-5" style="max-width: 480px;">
+    <form method="post" novalidate>
+      {% csrf_token %}
+      <div class="mb-3">
+        <label class="form-label">Имя пользователя</label>
+        {{ form.username }}
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Пароль</label>
+        {{ form.password }}
+        {% for error in form.non_field_errors %}<div class="text-danger small mt-2">{{ error }}</div>{% endfor %}
+      </div>
+      <button type="submit" class="ya-btn">Войти</button>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

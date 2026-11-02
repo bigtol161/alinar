@@ -1,0 +1,19 @@
+# Виртуальное окружение
+venv/
+.venv/
+
+# База данных и медиа
+db.sqlite3
+media/
+
+# Кеши Python
+__pycache__/
+*.pyc
+
+# Локальные секреты
+.env
+.env.local
+
+# Служебное
+*.log
+.DS_Store

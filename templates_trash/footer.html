@@ -1,0 +1,20 @@
+<footer class="site-footer">
+    <div class="container footer-grid">
+        <div>
+            <div class="footer-logo">Дом Услуг</div>
+            <p class="footer-text">Полезные статьи о ремонте, строительстве и бытовых услугах.</p>
+        </div>
+        <div>
+            <div class="footer-title">Разделы</div>
+            <ul class="footer-nav">
+                <li><a href="/">Главная</a></li>
+                <li><a href="{% url 'news:article_list' %}">Статьи</a></li>
+                <li><a href="{% url 'news:executor_list' %}">Исполнители</a></li>
+                <li><a href="{% url 'news:stats' %}">Статистика</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="container footer-bottom">
+        © {% now "Y" %} Дом Услуг. Все права защищены.
+    </div>
+</footer>

@@ -1,0 +1,262 @@
+/* ===== Яндекс-стиль для Alinar: дизайн-токены ===== */
+:root {
+  --ya-bg: #ffffff;            /* фон страницы */
+  --ya-bg-soft: #f5f5f7;       /* светло-серые секции */
+  --ya-card: #ffffff;          /* фон карточки */
+  --ya-text: #21201f;          /* основной текст */
+  --ya-text-muted: #85858a;    /* серые подписи */
+  --ya-accent: #fdd928;        /* фирменный жёлтый */
+  --ya-accent-hover: #f2c911;
+  --ya-line: #e8e8ea;          /* тонкие разделители */
+  --ya-radius: 20px;           /* крупные карточки */
+  --ya-radius-sm: 12px;        /* кнопки, мелкие элементы */
+  --ya-shadow: 0 1px 2px rgba(33, 32, 31, .08);
+  --ya-font: 'Inter', -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+
+body {
+  background: var(--ya-bg);
+  color: var(--ya-text);
+  font-family: var(--ya-font);
+}
+
+/* Секция на светло-сером фоне — разделение воздухом, не линиями */
+.ya-section { background: var(--ya-bg-soft); border-radius: var(--ya-radius); }
+.ya-section-title { font-weight: 700; font-size: 1.5rem; margin: 1.5rem 0 1rem; }
+.ya-muted { color: var(--ya-text-muted); }
+
+/* Главная кнопка — жёлтая, как у Яндекса */
+.ya-btn {
+  background: var(--ya-accent);
+  color: var(--ya-text);
+  border: none;
+  border-radius: var(--ya-radius-sm);
+  font-weight: 500;
+  padding: .55rem 1.2rem;
+}
+.ya-btn:hover { background: var(--ya-accent-hover); color: var(--ya-text); }
+
+/* Карточка: скруглённая, с мягкой тенью, без рамок */
+.ya-card {
+  background: var(--ya-card);
+  border: none;
+  border-radius: var(--ya-radius);
+  box-shadow: var(--ya-shadow);
+  overflow: hidden;
+  height: 100%;
+}
+.ya-card .card-body { padding: 1rem 1.1rem; }
+
+/* Плитка категории на главной */
+.ya-tile {
+  display: flex; align-items: center; gap: .75rem;
+  background: var(--ya-bg-soft);
+  border-radius: var(--ya-radius);
+  padding: 1rem 1.2rem;
+  text-decoration: none; color: var(--ya-text);
+  font-weight: 500;
+  transition: background .15s ease;
+}
+.ya-tile:hover { background: #ececef; color: var(--ya-text); }
+
+/* Шапка */
+.ya-header { background: #fff; border-bottom: 1px solid var(--ya-line); }
+.ya-logo { font-weight: 800; font-size: 1.35rem; text-decoration: none; color: var(--ya-text); }
+.ya-logo span { color: #d9a400; }
+.ya-search { max-width: 560px; }
+.ya-search input {
+  background: var(--ya-bg-soft);
+  border: none; border-radius: var(--ya-radius-sm);
+  padding: .55rem 1rem;
+}
+
+/* Рейтинг звёздами (цифру подставит Django) */
+.ya-rating::before { content: "★ "; color: #f2c911; }
+
+/* Крупная строка поиска на главной */
+.ya-search-input {
+  background: var(--ya-bg-soft);
+  border: none;
+  border-radius: var(--ya-radius-sm);
+}
+.ya-search-input:focus {
+  background: var(--ya-bg-soft);
+  box-shadow: 0 0 0 2px var(--ya-accent);
+}
+
+/* Крупная строка поиска на главной */
+/* Страница статьи */
+.article-title {
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+.article-cover {
+  max-width: 760px;
+  margin: 0 auto;
+  display: block;
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+}
+.article-lead {
+  font-size: 1.15rem;
+  color: var(--ya-text-muted, #6e6e73);
+  border-left: 3px solid var(--ya-accent);
+  padding-left: 14px;
+}
+.article-content {
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+.article-content h2, .article-content h3 {
+  font-weight: 700;
+  margin-top: 1.8rem;
+}
+.article-content p {
+  margin-bottom: 1rem;
+}
+.ya-chip {
+  display: inline-block;
+  background: var(--ya-bg-soft);
+  border-radius: var(--ya-radius-sm, 10px);
+  padding: 4px 12px;
+  font-size: .85rem;
+  color: var(--ya-text-muted, #6e6e73);
+}
+
+/* Поля формы заявки */
+.lead-input {
+  background: var(--ya-bg-soft, #f5f5f7);
+  border: none;
+  border-radius: var(--ya-radius-sm, 10px);
+  padding: 12px 16px;
+  width: 100%;
+}
+.lead-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--ya-accent, #ffcc00);
+}
+
+/* Уведомления */
+.alert-success {
+  background: #e8f7e8;
+  border: none;
+  color: #1a7f37;
+  border-radius: var(--ya-radius-sm, 10px);
+}
+.alert-error {
+  background: #fdecea;
+  border: none;
+  color: #b3261e;
+  border-radius: var(--ya-radius-sm, 10px);
+}
+.alert-warning {
+  background: #fff8e0;
+  border: none;
+  color: #8a6d00;
+  border-radius: var(--ya-radius-sm, 10px);
+}
+.alert-info {
+  background: var(--ya-bg-soft, #f5f5f7);
+  border: none;
+  color: #6e6e73;
+  border-radius: var(--ya-radius-sm, 10px);
+}
+
+
+/* ===== mobile-header: шапка на узких экранах ===== */
+@media (max-width: 575.98px) {
+  .ya-header .ya-logo {
+    white-space: nowrap;
+    font-size: 1.05rem;
+  }
+  .ya-header .ya-search {
+    display: none;
+  }
+  .ya-header .ya-btn {
+    white-space: nowrap;
+    font-size: 0.875rem;
+    padding: 0.4rem 0.75rem;
+    margin-left: auto;
+  }
+}
+
+
+/* ===== mobile-menu: бургер ===== */
+.ya-burger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 42px;
+  height: 42px;
+  padding: 0 9px;
+  border: none;
+  border-radius: 12px;
+  background: transparent;
+}
+.ya-burger:hover { background: var(--ya-bg-soft, #f5f5f7); }
+.ya-burger span {
+  display: block;
+  height: 2px;
+  border-radius: 2px;
+  background: #21201f;
+}
+
+.ya-chip-active {
+  background: #ff5c00;
+  color: #fff;
+}
+
+/* ===== Единый стиль полей ввода ===== */
+.form-control,
+.form-select,
+.lead-input,
+.ya-search input,
+.ya-search-input {
+  background: var(--ya-bg-soft, #f5f5f7);
+  border: none;
+  border-radius: var(--ya-radius-sm, 10px);
+  padding: .625rem 1rem;
+  font-size: 1rem;
+  line-height: 1.4;
+  min-height: 44px;
+}
+.form-control::placeholder,
+.ya-search input::placeholder,
+.lead-input::placeholder {
+  color: var(--ya-text-muted, #6e6e73);
+}
+.form-control:focus,
+.form-select:focus,
+.lead-input:focus,
+.ya-search input:focus,
+.ya-search-input:focus {
+  background: var(--ya-bg-soft, #f5f5f7);
+  outline: none;
+  border: none;
+  box-shadow: 0 0 0 2px var(--ya-accent, #ffcc00);
+}
+textarea.form-control {
+  min-height: 110px;
+  resize: vertical;
+}
+.form-select {
+  appearance: none;
+}
+
+
+/* Прилипающий футер */
+body { min-height: 100vh; display: flex; flex-direction: column; }
+body > main { flex: 1 0 auto; }
+body > footer { margin-top: auto; }
+
+
+/* Фикс дёрганья меню */
+html { scrollbar-gutter: stable; overflow-y: scroll; }
+
+
+/* Выравнивание карточек */
+.ya-card.h-100 { display: flex; flex-direction: column; }
+.ya-card.h-100 .card-body { flex: 1 1 auto; }

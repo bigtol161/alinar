@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Исполнители — Алинар{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h3 mb-0">Исполнители{% if current_city %} в {{ current_city.name }}{% endif %}</h1>
+  <span class="ya-muted">Всего: {{ executors|length }}</span>
+</div>
+
+{% if current_service or current_city %}
+<div class="mb-3 d-flex gap-2 align-items-center flex-wrap">
+  <span class="ya-muted small">Фильтры:</span>
+  {% if current_city %}
+    <a href="{% url 'news:executor_list' %}{% if current_service %}?service={{ current_service.pk }}{% endif %}"
+       class="ya-chip text-decoration-none">{{ current_city.name }} ✕</a>
+  {% endif %}
+  {% if current_service %}
+    <a href="{% url 'news:executor_list' %}{% if current_city %}?city={{ current_city.pk }}{% endif %}"
+       class="ya-chip text-decoration-none">{{ current_service.name }} ✕</a>
+  {% endif %}
+  <a href="{% url 'news:executor_list' %}" class="small text-decoration-none">сбросить всё</a>
+</div>
+{% endif %}
+
+<div class="row g-3">
+  {% for executor in executors %}
+  <div class="col-12 col-md-6 col-lg-4">
+    <div class="ya-card h-100">
+      {% if executor.photo %}
+        <img src="{{ executor.photo.url }}" class="card-img-top" alt="{{ executor.name }}" style="height: 200px; object-fit: cover;">
+      {% endif %}
+      <div class="card-body d-flex flex-column">
+        {% if executor.specialty %}
+          <span class="ya-chip mb-1 align-self-start">{{ executor.specialty }}</span>
+        {% endif %}
+        {% if executor.services.all %}
+          <div class="mb-2">
+            {% for s in executor.services.all|slice:":4" %}
+              <span class="ya-chip me-1">{{ s.name }}</span>
+            {% endfor %}
+          </div>
+        {% endif %}
+        <h2 class="h5 mb-1">
+          <a href="{% url 'news:executor_detail' executor.slug %}"
+             class="text-decoration-none text-body stretched-link">{{ executor.name }}</a>
+        </h2>
+        {% if executor.city %}
+          <div class="ya-muted small mb-1">{{ executor.city.name }}</div>
+        {% endif %}
+        {% if executor.price_from %}
+          <div class="fw-bold">от {{ executor.price_from }} ₽</div>
+        {% endif %}
+        <div class="mt-auto pt-2">
+          <a href="{% url 'news:executor_detail' executor.slug %}" class="ya-btn text-decoration-none">Заказать</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <div class="col-12">
+    {% if current_service or current_city %}
+      <p class="ya-muted">По выбранным фильтрам ничего не нашлось.
+        <a href="{% url 'news:executor_list' %}" class="text-decoration-none">Сбросить фильтры</a></p>
+    {% else %}
+      <p class="ya-muted">Анкет пока нет — добавьте первую в админке.</p>
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

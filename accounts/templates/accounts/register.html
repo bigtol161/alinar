@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Регистрация — Дом услуг{% endblock %}
+
+{% block content %}
+
+<h1 class="mb-3" style="font-size: 1.6rem; font-weight: 800;">Стать исполнителем</h1>
+
+<div class="ya-card">
+  <div class="card-body p-4 p-md-5" style="max-width: 520px;">
+
+    <p class="ya-muted">Заведите аккаунт — а администратор привяжет его к вашей анкете
+    исполнителя в панели управления. После этого заявки заказчиков будут приходить вам
+    в раздел «Мои заявки» на анкете.</p>
+
+    <form method="post" novalidate>
+      {% csrf_token %}
+      <div class="mb-3">
+        <label class="form-label">Имя пользователя</label>
+        {{ form.username }}
+        {% for error in form.username.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Пароль</label>
+        {{ form.password1 }}
+        {% for error in form.password1.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Повторите пароль</label>
+        {{ form.password2 }}
+        {% for error in form.password2.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+      </div>
+      <button type="submit" class="ya-btn">Создать аккаунт</button>
+      <a href="{% url 'login' %}" class="ms-3 text-decoration-none">Уже есть аккаунт? Войти</a>
+    </form>
+
+  </div>
+</div>
+
+{% endblock %}

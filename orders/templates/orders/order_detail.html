@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}{{ order.title }} — Дом услуг{% endblock %}
+
+{% block content %}
+
+<div class="ya-card mb-4">
+  <div class="card-body p-4">
+    <div class="d-flex justify-content-between align-items-start">
+      <h1 class="h3 mb-1">{{ order.title }}</h1>
+      <span class="badge {% if order.status == 'new' %}bg-warning text-dark{% else %}bg-secondary{% endif %}">
+        {{ order.get_status_display }}
+      </span>
+    </div>
+    <div class="ya-muted small mb-3">
+      {{ order.city.name }} · {{ order.service.name }}
+      {% if order.budget %} · бюджет {{ order.budget }} руб.{% endif %}
+      · {{ order.created_at|date:"d.m.Y H:i" }}
+    </div>
+    <p class="mb-2">{{ order.description|linebreaksbr }}</p>
+    <div class="small">Контакт: {{ order.contact_name }}</div>
+
+    {% if is_author and order.status == 'new' %}
+      <form method="post" action="{% url 'orders:close' order.pk %}" class="mt-3">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-link btn-sm text-decoration-none p-0">Закрыть заказ</button>
+      </form>
+    {% endif %}
+  </div>
+</div>
+
+{% if is_author %}
+  <h2 class="h5 mb-3">Отклики мастеров{% if responses|length %}: {{ responses|length }}{% endif %}</h2>
+  {% for response in responses %}
+    <div class="ya-card mb-3">
+      <div class="card-body p-4">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <div class="fw-bold">{{ response.executor.name }}</div>
+            {% if response.executor.specialty %}
+              <span class="ya-chip">{{ response.executor.specialty }}</span>
+            {% endif %}
+            {% if response.executor.city %}
+              <span class="ya-muted small ms-1">{{ response.executor.city.name }}</span>
+            {% endif %}
+          </div>
+          {% if response.price %}
+            <span class="badge bg-warning text-dark">за {{ response.price }} руб.</span>
+          {% endif %}
+        </div>
+        {% if response.message %}
+          <p class="mt-2 mb-2">{{ response.message|linebreaksbr }}</p>
+        {% endif %}
+        <a class="ya-btn text-decoration-none d-inline-block mt-2"
+           href="tel:{{ response.executor.phone|cut:' ' }}">Позвонить: {{ response.executor.phone }}</a>
+      </div>
+    </div>
+  {% empty %}
+    <div class="ya-card"><div class="card-body p-4 ya-muted">Пока никто не откликнулся. Мастера увидят ваш заказ в общем списке.</div></div>
+  {% endfor %}
+
+{% elif can_respond %}
+  <h2 class="h5 mb-3">Откликнуться</h2>
+  <div class="ya-card">
+    <div class="card-body p-4" style="max-width: 560px;">
+      <form method="post" action="{% url 'orders:respond' order.pk %}" novalidate>
+        {% csrf_token %}
+        <div class="mb-3">
+          <label class="form-label">Сообщение заказчику</label>
+          {{ form.message }}
+          {% for error in form.message.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Предлагаемая цена, руб. (необязательно)</label>
+          {{ form.price }}
+          {% for error in form.price.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+        </div>
+        <button type="submit" class="ya-btn">Отправить отклик</button>
+      </form>
+    </div>
+  </div>
+
+{% elif already_responded %}
+  <div class="ya-card"><div class="card-body p-4 ya-muted">Вы уже откликнулись на этот заказ. Заказчик увидит ваш отклик и телефон из анкеты.</div></div>
+
+{% else %}
+  <div class="ya-card"><div class="card-body p-4 ya-muted">
+    {% if request.user.is_authenticated %}
+      Откликнуться могут мастера с анкетой — <a href="{% url 'news:register' %}" class="text-decoration-none">стать исполнителем</a>.
+    {% else %}
+      Чтобы откликнуться, нужен аккаунт мастера с анкетой.
+    {% endif %}
+  </div></div>
+{% endif %}
+
+{% endblock %}

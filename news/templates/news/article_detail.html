@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}{% if article.meta_title %}{{ article.meta_title }}{% else %}{{ article.title }} — Дом услуг{% endif %}{% endblock %}
+{% block description %}{% if article.meta_description %}{{ article.meta_description }}{% else %}{{ article.short_description|truncatechars:160 }}{% endif %}{% endblock %}
+{% block og_title %}{{ article.title }} — Алинар{% endblock %}
+{% block og_description %}{% if article.meta_description %}{{ article.meta_description }}{% else %}{{ article.short_description|truncatechars:160 }}{% endif %}{% endblock %}
+
+{% block content %}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "{{ article.title|striptags|escapejs }}",
+  {% if article.short_description %}"description": "{{ article.short_description|striptags|escapejs }}",{% endif %}
+  {% if article.cover %}"image": "{{ article.cover.url }}",{% endif %}
+  {% if article.published_at %}"datePublished": "{{ article.published_at|date:'c' }}",{% endif %}
+  "dateModified": "{% if article.published_at %}{{ article.published_at|date:'c' }}{% else %}{{ article.created_at|date:'c' }}{% endif %}",
+  "mainEntityOfPage": "{{ request.build_absolute_uri }}"
+}
+</script>
+
+<article class="ya-card article-detail">
+  {% if article.cover %}
+    <img src="{{ article.cover.url }}" class="article-cover img-fluid rounded" alt="{{ article.title }}">
+  {% endif %}
+
+  <div class="card-body p-4 p-md-5">
+    <div class="d-flex flex-wrap gap-2 mb-2">
+      {% if article.get_rubric_display %}
+        <span class="ya-chip">{{ article.get_rubric_display }}</span>
+      {% endif %}
+      {% if article.city %}
+        <span class="ya-chip">{{ article.city.name }}</span>
+      {% endif %}
+    </div>
+
+    <h1 class="article-title mb-3">{{ article.title }}</h1>
+
+    <div class="ya-muted small mb-4">
+      {% if article.published_at %}
+        {{ article.published_at|date:"d.m.Y" }}
+      {% else %}
+        {{ article.created_at|date:"d.m.Y" }}
+      {% endif %}
+    </div>
+
+    {% if article.short_description %}
+      <p class="article-lead">{{ article.short_description }}</p>
+    {% endif %}
+
+    <div class="article-content">
+      {{ article.content|linebreaks }}
+    </div>
+  </div>
+</article>
+
+{% if related_executors %}
+<section class="mt-4">
+  <h2 class="ya-section-title">Мастера по этой услуге</h2>
+  <div class="row g-3">
+    {% for executor in related_executors %}
+    <div class="col-12 col-md-6">
+      <div class="ya-card h-100">
+        <div class="card-body d-flex flex-column">
+          {% if executor.specialty %}
+            <span class="ya-chip mb-1 align-self-start">{{ executor.specialty }}</span>
+          {% endif %}
+          <h3 class="h5 mb-1">
+            <a href="{% url 'news:executor_detail' executor.slug %}" class="text-decoration-none text-body stretched-link">{{ executor.name }}</a>
+          </h3>
+          {% if executor.city %}
+            <div class="ya-muted small mb-1">{{ executor.city.name }}</div>
+          {% endif %}
+          {% if executor.price_from %}
+            <div class="fw-bold">от {{ executor.price_from }} ₽</div>
+          {% endif %}
+          <div class="mt-auto pt-2">
+            <a href="{% url 'news:executor_detail' executor.slug %}" class="ya-btn text-decoration-none">Заказать</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<section class="ya-section p-4 p-md-5 mt-4">
+  <div class="row align-items-center">
+    <div class="col-md-8">
+      <h2 class="h4 fw-bold mb-1">Нужен мастер для этой задачи?</h2>
+      <p class="ya-muted mb-0">Посмотрите анкеты исполнителей с ценами и отзывами.</p>
+    </div>
+    <div class="col-md-4 text-md-end mt-3 mt-md-0">
+      <a href="{% url 'news:executor_list' %}" class="ya-btn text-decoration-none">Найти исполнителя</a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
