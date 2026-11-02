@@ -39,6 +39,12 @@
       <span class="ya-chip">{{ executor.city.name }}</span>
     {% endif %}
 
+    {% if executor.done_count %}
+      <div class="mt-1">
+        <span class="ya-chip">Обработано заявок: {{ executor.done_count }}</span>
+      </div>
+    {% endif %}
+
     <h1 class="mt-2 mb-3" style="font-size: 1.8rem; font-weight: 800;">
       {{ executor.name }}
     </h1>

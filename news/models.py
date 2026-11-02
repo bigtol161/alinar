@@ -79,6 +79,11 @@ class Executor(models.Model):
         blank=True,
         related_name='executors',
     )
+    
+    @property
+    def done_count(self):
+        """Сколько заявок мастер обработал."""
+        return self.leads.filter(status='done').count()
     user = models.OneToOneField(
         'auth.User',
         verbose_name='Аккаунт исполнителя',
