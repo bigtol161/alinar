@@ -1,15 +1,30 @@
 from django.contrib import admin
+from django.utils.html import format_html
 
 from .models import Order, Response
 
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('title', 'city', 'service', 'budget', 'contact_name', 'phone', 'status', 'author', 'created_at')
+    list_display = ('title', 'city', 'service', 'budget', 'contact_name', 'phone', 'colored_status', 'author', 'created_at')
     list_filter = ('status', 'city', 'service')
     search_fields = ('title', 'description', 'contact_name', 'phone')
     readonly_fields = ('created_at',)
     list_per_page = 30
+
+    @admin.display(description='Статус', ordering='status')
+    def colored_status(self, obj):
+        colors = {
+            'open': '#b45309',
+            'in_progress': '#1d4ed8',
+            'done': '#15803d',
+            'closed': '#6b7280',
+        }
+        return format_html(
+            '<span style="color: {}; font-weight: 600;">{}</span>',
+            colors.get(obj.status, '#374151'),
+            obj.get_status_display(),
+        )
 
 
 @admin.register(Response)

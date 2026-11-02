@@ -50,6 +50,7 @@ class ExecutorAdmin(admin.ModelAdmin):
     list_filter = ('city', 'services', 'is_active')
     search_fields = ('name', 'specialty', 'phone', 'description')
     fields = ('name', 'slug', 'specialty', 'city', 'services', 'photo', 'price_from', 'phone', 'description', 'user', 'is_active')
+    filter_horizontal = ('services',)
     prepopulated_fields = {'slug': ('name',)}
 
     def get_queryset(self, request):

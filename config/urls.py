@@ -19,3 +19,15 @@ urlpatterns = [
     path('orders/', include('orders.urls')),
     path('accounts/', include('accounts.urls')),
 ]
+
+# Оформление админки
+from django.contrib import admin as _admin
+_admin.site.site_header = 'Алинар — панель управления'
+_admin.site.site_title = 'Алинар'
+_admin.site.index_title = 'Управление сайтом'
+
+# Оформление админки
+from django.contrib import admin as _admin
+_admin.site.site_header = 'Дом услуг — панель управления'
+_admin.site.site_title = 'Дом услуг'
+_admin.site.index_title = 'Управление сайтом'
