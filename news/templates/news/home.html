@@ -133,4 +133,20 @@
   {% endfor %}
 </div>
 
+{# Приглашение для второй аудитории — исполнителей: заявки бесплатно, без комиссии #}
+<div class="ya-card mt-4">
+  <div class="card-body p-4 p-md-5 text-center">
+    <h2 class="mb-2" style="font-size: 1.4rem; font-weight: 800;">Вы мастер или бригада?</h2>
+    <p class="ya-muted mb-3">
+      Заведите анкету — заказчики будут находить вас сами.
+      Заявки приходят вам бесплатно, никаких процентов с заказа.
+    </p>
+    {% if user.is_authenticated %}
+      <a href="{% url 'news:executor_list' %}" class="ya-btn text-decoration-none">Посмотреть анкеты коллег</a>
+    {% else %}
+      <a href="{% url 'register' %}" class="ya-btn text-decoration-none">Зарегистрироваться</a>
+    {% endif %}
+  </div>
+</div>
+
 {% endblock %}
