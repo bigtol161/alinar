@@ -28,31 +28,53 @@
   </div>
 </div>
 
+<style>
+  .step-card {
+    border-radius: 16px;
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .step-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .08);
+  }
+  .step-1 { background: linear-gradient(135deg, #fff9e0, #ffedb3); }
+  .step-2 { background: linear-gradient(135deg, #e8f4ff, #cfe9ff); }
+  .step-3 { background: linear-gradient(135deg, #eaf9ee, #d3f2dd); }
+  .step-badge {
+    width: 48px; height: 48px; border-radius: 50%;
+    background: #ffdb4d; color: #1a1a1a;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.25rem; font-weight: 800;
+    margin-bottom: 0.75rem;
+  }
+  .step-card .ya-muted { color: #55555f; }
+</style>
+
 <div class="mb-4">
   <h2 class="h4 mb-3">Как это работает</h2>
   <div class="row g-3">
     <div class="col-12 col-md-4">
-      <div class="ya-card h-100">
+      <div class="ya-card h-100 step-card step-1">
         <div class="card-body">
-          <div class="ya-muted small mb-1">Шаг 1</div>
+          <div class="step-badge">1</div>
           <h3 class="h6 mb-1">Выбираете мастера</h3>
           <p class="ya-muted small mb-0">Смотрите анкеты, специальности и цены в своём городе.</p>
         </div>
       </div>
     </div>
     <div class="col-12 col-md-4">
-      <div class="ya-card h-100">
+      <div class="ya-card h-100 step-card step-2">
         <div class="card-body">
-          <div class="ya-muted small mb-1">Шаг 2</div>
+          <div class="step-badge">2</div>
           <h3 class="h6 mb-1">Оставляете заявку</h3>
           <p class="ya-muted small mb-0">Описываете задачу — номер телефона не обязателен для входа.</p>
         </div>
       </div>
     </div>
     <div class="col-12 col-md-4">
-      <div class="ya-card h-100">
+      <div class="ya-card h-100 step-card step-3">
         <div class="card-body">
-          <div class="ya-muted small mb-1">Шаг 3</div>
+          <div class="step-badge">3</div>
           <h3 class="h6 mb-1">Мастер перезвонит вам</h3>
           <p class="ya-muted small mb-0">Обсуждаете детали и договариваетесь о времени.</p>
         </div>
