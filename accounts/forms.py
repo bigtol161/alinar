@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
 from .models import Profile
+from news.models import City
 
 CONSENT_LABEL = (
     'Я согласен с <a href="/privacy/" target="_blank">'
@@ -27,14 +28,26 @@ class RegisterForm(UserCreationForm):
         pass
 
 
+
+def city_choices():
+    """Список городов из базы: тот же, что в анкете исполнителя."""
+    return [('', 'Не указан')] + [(c.name, c.name) for c in City.objects.all()]
+
+
 class ProfileForm(forms.ModelForm):
+    city = forms.ChoiceField(
+        required=False,
+        label='Город',
+        choices=city_choices,
+        widget=forms.Select(attrs={'class': 'form-select'}),
+    )
+
     class Meta:
         model = Profile
         fields = ('city', 'phone', 'bio', 'avatar')
         widgets = {
-            'city': forms.TextInput(attrs={'class': 'form-control'}),
             'phone': forms.TextInput(attrs={'class': 'form-control'}),
             'bio': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
             'avatar': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
-        labels = {'city': 'Город', 'phone': 'Телефон', 'bio': 'О себе', 'avatar': 'Аватар'}
+        labels = {'phone': 'Телефон', 'bio': 'О себе', 'avatar': 'Аватар'}
