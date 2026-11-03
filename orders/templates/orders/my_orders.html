@@ -52,11 +52,9 @@
       </div>
       {% if order.status == 'new' %}
         <div class="mb-2">
-          {% with n=order.responses.count %}
-            <a href="{% url 'orders:detail' order.pk %}" class="text-decoration-none">
-              Отклики: {{ n }}{% if n == 0 %} — пока нет{% endif %}
-            </a>
-          {% endwith %}
+          <a href="{% url 'orders:detail' order.pk %}" class="text-decoration-none">
+            Отклики: {{ order.responses_count }}{% if not order.responses_count %} — пока нет{% endif %}
+          </a>
         </div>
         <form method="post" action="{% url 'orders:close' order.pk %}">
           {% csrf_token %}

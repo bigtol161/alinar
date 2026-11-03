@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from .forms import OrderForm, ResponseForm
 from accounts.rate_limit import rate_limit
 from core.models import City, Service
+from django.db.models import Count
 from .models import Notification, Order
 
 
@@ -100,7 +101,11 @@ def my_orders(request):
     q = request.GET.get('q', '').strip()
     city_id = request.GET.get('city', '')
     service_id = request.GET.get('service', '')
-    orders = request.user.orders.select_related('city', 'service')
+    orders = (
+        request.user.orders
+        .select_related('city', 'service')
+        .annotate(responses_count=Count('responses'))
+    )
     if q:
         orders = orders.filter(title__icontains=q)
     if city_id.isdigit():
