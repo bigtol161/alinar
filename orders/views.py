@@ -137,7 +137,9 @@ def notifications(request):
 
 @login_required
 def notifications_read(request):
-    """Отметить все уведомления пользователя прочитанными."""
+    """Отметить все уведомления пользователя прочитанными (только POST)."""
+    if request.method != 'POST':
+        return redirect('orders:notifications')
     request.user.notifications.filter(is_read=False).update(is_read=True)
     return redirect('orders:notifications')
 
