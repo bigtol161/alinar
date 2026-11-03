@@ -1,6 +1,5 @@
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Q
-from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
 from core.models import City, Service
@@ -10,9 +9,6 @@ from accounts.rate_limit import rate_limit
 from orders.models import Notification
 from .models import Article, Executor, Lead
 
-import logging
-
-logger = logging.getLogger(__name__)
 
 
 def home(request):
@@ -211,6 +207,3 @@ def robots(request):
     return render(request, 'robots.txt', content_type='text/plain')
 
 
-def test_log_view(request):
-    logger.error('ТЕСТОВОЕ СООБЩЕНИЕ ДЛЯ ПРОВЕРКИ ЛОГОВ')
-    return HttpResponse('Логирование работает!')

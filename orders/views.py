@@ -128,7 +128,6 @@ def my_orders(request):
 
 
 @login_required
-@login_required
 def notifications(request):
     """Список уведомлений текущего пользователя."""
     notes = (
@@ -149,6 +148,7 @@ def notifications_read(request):
     return redirect('orders:notifications')
 
 
+@login_required
 def order_close(request, pk):
     """Закрыть заказ может только его автор."""
     order = get_object_or_404(Order, pk=pk)
