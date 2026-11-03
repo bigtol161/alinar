@@ -6,7 +6,7 @@ from .models import City, Service
 
 @admin.register(City)
 class CityAdmin(admin.ModelAdmin):
-    list_display = ('name', 'articles_count', 'executors_count')
+    list_display = ('name', 'orders_count', 'articles_count', 'executors_count')
     search_fields = ('name',)
 
     def get_queryset(self, request):
@@ -15,8 +15,13 @@ class CityAdmin(admin.ModelAdmin):
             .annotate(
                 n_articles=Count('articles', distinct=True),
                 n_executors=Count('executors', distinct=True),
+                n_orders=Count('orders', distinct=True),
             )
         )
+
+    @admin.display(description='Заказов', ordering='n_orders')
+    def orders_count(self, obj):
+        return obj.n_orders
 
     @admin.display(description='Статей', ordering='n_articles')
     def articles_count(self, obj):
@@ -29,7 +34,7 @@ class CityAdmin(admin.ModelAdmin):
 
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
-    list_display = ('name', 'articles_count', 'executors_count')
+    list_display = ('name', 'orders_count', 'articles_count', 'executors_count')
     search_fields = ('name',)
 
     def get_queryset(self, request):
@@ -38,8 +43,13 @@ class ServiceAdmin(admin.ModelAdmin):
             .annotate(
                 n_articles=Count('articles', distinct=True),
                 n_executors=Count('executors', distinct=True),
+                n_orders=Count('orders', distinct=True),
             )
         )
+
+    @admin.display(description='Заказов', ordering='n_orders')
+    def orders_count(self, obj):
+        return obj.n_orders
 
     @admin.display(description='Статей', ordering='n_articles')
     def articles_count(self, obj):
