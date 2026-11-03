@@ -53,6 +53,19 @@ class ExecutorAdmin(admin.ModelAdmin):
     filter_horizontal = ('services',)
     prepopulated_fields = {'slug': ('name',)}
 
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+        photo = form.base_fields['photo']
+        photo.label = 'Ваше личное фото'
+        photo.help_text = (
+            'Загрузите свою настоящую фотографию — заказчики увидят её '
+            'на странице вашей анкеты. Логотипы, стоковые и чужие снимки '
+            'не годятся: анкета с реальным лицом вызывает больше доверия. '
+            'Лучше портрет при хорошем свете, по грудь.'
+        )
+        return form
+
+
     def get_queryset(self, request):
         return super().get_queryset(request).annotate(num_leads=Count('leads'))
 
