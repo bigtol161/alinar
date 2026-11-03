@@ -69,7 +69,7 @@ class ExecutorProfileForm(forms.ModelForm):
 
     class Meta:
         model = Executor
-        fields = ('specialty', 'phone', 'price_from', 'city', 'services', 'description')
+        fields = ('specialty', 'phone', 'price_from', 'city', 'services', 'description', 'photo')
         widgets = {
             'specialty': forms.TextInput(attrs={'class': 'form-control'}),
             'phone': forms.TextInput(attrs={'class': 'form-control'}),
@@ -77,4 +77,5 @@ class ExecutorProfileForm(forms.ModelForm):
             'city': forms.Select(attrs={'class': 'form-select'}),
             'services': forms.CheckboxSelectMultiple,
             'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
+            'photo': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }

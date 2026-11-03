@@ -30,10 +30,11 @@ class RegisterForm(UserCreationForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ('city', 'phone', 'bio')
+        fields = ('city', 'phone', 'bio', 'avatar')
         widgets = {
             'city': forms.TextInput(attrs={'class': 'form-control'}),
             'phone': forms.TextInput(attrs={'class': 'form-control'}),
             'bio': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+            'avatar': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
-        labels = {'city': 'Город', 'phone': 'Телефон', 'bio': 'О себе'}
+        labels = {'city': 'Город', 'phone': 'Телефон', 'bio': 'О себе', 'avatar': 'Аватар'}
