@@ -220,7 +220,7 @@ def executor_edit(request):
     if executor is None:
         return redirect('news:home')
     if request.method == 'POST':
-        form = ExecutorProfileForm(request.POST, instance=executor)
+        form = ExecutorProfileForm(request.POST, request.FILES, instance=executor)
         if form.is_valid():
             form.save()
             return redirect('news:executor_detail', slug=executor.slug)
