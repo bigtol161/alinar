@@ -58,3 +58,23 @@ class LeadForm(forms.ModelForm):
                 'class': 'lead-input', 'rows': 4,
             }),
         }
+
+
+from django import forms  # noqa: повторный импорт безопасен
+from .models import City, Executor, Service  # noqa: то же самое
+
+
+class ExecutorProfileForm(forms.ModelForm):
+    """Анкета мастера: правит только владелец, только витринные поля."""
+
+    class Meta:
+        model = Executor
+        fields = ('specialty', 'phone', 'price_from', 'city', 'services', 'description')
+        widgets = {
+            'specialty': forms.TextInput(attrs={'class': 'form-control'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control'}),
+            'price_from': forms.NumberInput(attrs={'class': 'form-control'}),
+            'city': forms.Select(attrs={'class': 'form-select'}),
+            'services': forms.CheckboxSelectMultiple,
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
+        }

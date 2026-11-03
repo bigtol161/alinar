@@ -41,6 +41,7 @@
       <div class="fw-bold">Заявки на мою анкету</div>
       <div class="ya-muted small mb-2">Всего: {{ executor_leads_count }} · Обработано: {{ executor_leads_done }}</div>
       <a href="{% url 'news:executor_leads' %}" class="ya-btn text-decoration-none">Открыть</a>
+      <a href="{% url 'news:executor_edit' %}" class="btn btn-link text-decoration-none">Редактировать анкету</a>
     </div></div>
   </div>
   {% endif %}

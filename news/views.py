@@ -207,3 +207,23 @@ def robots(request):
     return render(request, 'robots.txt', content_type='text/plain')
 
 
+
+
+from django.contrib.auth.decorators import login_required  # noqa
+from django.shortcuts import get_object_or_404, redirect, render  # noqa
+
+
+@login_required
+def executor_edit(request):
+    """Редактирование анкеты мастера — только её владельцем."""
+    executor = getattr(request.user, 'executor', None)
+    if executor is None:
+        return redirect('news:home')
+    if request.method == 'POST':
+        form = ExecutorProfileForm(request.POST, instance=executor)
+        if form.is_valid():
+            form.save()
+            return redirect('news:executor_detail', slug=executor.slug)
+    else:
+        form = ExecutorProfileForm(instance=executor)
+    return render(request, 'news/executor_edit.html', {'form': form, 'executor': executor})

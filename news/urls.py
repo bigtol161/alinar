@@ -11,6 +11,7 @@ urlpatterns = [
     path('news/stats/', views.stats, name='stats'),
     path('news/masters/', views.executor_list, name='executor_list'),
     path('news/masters/<slug:slug>/', views.executor_detail, name='executor_detail'),
+    path('news/masters/<slug:slug>/edit/', views.executor_edit, name='executor_edit'),
     path('news/my-leads/', views.my_leads, name='my_leads'),
     path('news/executor-leads/', views.executor_leads, name='executor_leads'),
     path('news/lead/<int:pk>/done/', views.lead_done, name='lead_done'),
