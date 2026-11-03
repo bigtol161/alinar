@@ -98,12 +98,28 @@ def order_create(request):
 def my_orders(request):
     """Заказы текущего пользователя."""
     q = request.GET.get('q', '').strip()
+    city_id = request.GET.get('city', '')
+    service_id = request.GET.get('service', '')
     orders = request.user.orders.select_related('city', 'service')
     if q:
         orders = orders.filter(title__icontains=q)
+    if city_id.isdigit():
+        orders = orders.filter(city_id=city_id)
+    if service_id.isdigit():
+        orders = orders.filter(service_id=service_id)
     orders = orders.order_by('-created_at')
     page = Paginator(orders, 10).get_page(request.GET.get('page'))
-    return render(request, 'orders/my_orders.html', {'page_obj': page, 'q': q})
+
+    qs = request.GET.copy()
+    qs.pop('page', None)
+    base_qs = qs.urlencode()
+
+    context = {
+        'page_obj': page, 'q': q, 'base_qs': base_qs,
+        'cities': City.objects.all().order_by('name'),
+        'services': Service.objects.all().order_by('name'),
+    }
+    return render(request, 'orders/my_orders.html', context)
 
 
 @login_required
