@@ -13,7 +13,7 @@ from django.shortcuts import redirect, render
 from news.models import Lead
 from orders.models import Notification, Order
 
-from .forms import RegisterForm
+from .forms import ProfileForm, RegisterForm
 from .rate_limit import rate_limit
 
 
@@ -31,6 +31,22 @@ def profile(request):
         'executor_leads_done': executor.leads.filter(status='done').count() if executor else 0,
     }
     return render(request, 'accounts/profile.html', context)
+
+
+@login_required
+def profile_edit(request):
+    """Редактирование профиля: город, телефон, био. Профиль создаётся при первом сохранении."""
+    profile = getattr(request.user, 'profile', None)
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, instance=profile)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.user = request.user
+            obj.save()
+            return redirect('profile')
+    else:
+        form = ProfileForm(instance=profile)
+    return render(request, 'accounts/profile_edit.html', {'form': form})
 
 
 # Не больше 3 регистраций в час с одного IP — человеку хватает с запасом.
