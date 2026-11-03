@@ -46,7 +46,7 @@ class ProfileForm(forms.ModelForm):
         model = Profile
         fields = ('city', 'phone', 'bio', 'avatar')
         widgets = {
-            'phone': forms.TextInput(attrs={'class': 'form-control'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '+7 (___) ___-__-__', 'inputmode': 'tel', 'data-phone-mask': '1'}),
             'bio': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
             'avatar': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }

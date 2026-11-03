@@ -72,7 +72,7 @@ class ExecutorProfileForm(forms.ModelForm):
         fields = ('specialty', 'phone', 'price_from', 'city', 'services', 'description', 'photo')
         widgets = {
             'specialty': forms.TextInput(attrs={'class': 'form-control'}),
-            'phone': forms.TextInput(attrs={'class': 'form-control'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '+7 (___) ___-__-__', 'inputmode': 'tel', 'data-phone-mask': '1'}),
             'price_from': forms.NumberInput(attrs={'class': 'form-control'}),
             'city': forms.Select(attrs={'class': 'form-select'}),
             'services': forms.CheckboxSelectMultiple,
