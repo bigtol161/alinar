@@ -16,7 +16,11 @@ def order_list(request):
     q = request.GET.get('q', '').strip()
     city_id = request.GET.get('city', '')
     service_id = request.GET.get('service', '')
-    orders = Order.objects.filter(status=status).select_related('city', 'service')
+    orders = (
+        Order.objects.filter(status=status)
+        .select_related('city', 'service')
+        .annotate(responses_count=Count('responses'))
+    )
     if q:
         orders = orders.filter(title__icontains=q)
     if city_id.isdigit():

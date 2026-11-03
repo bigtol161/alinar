@@ -61,6 +61,13 @@
       </div>
       <div class="ya-muted small mb-2">
         {{ order.city.name }} · {{ order.service.name }} · {{ order.created_at|date:"d.m.Y H:i" }}
+        {% if user.is_authenticated %}
+          {% if order.responses_count %}
+            · Откликов: {{ order.responses_count }}
+          {% else %}
+            · Пока нет откликов
+          {% endif %}
+        {% endif %}
       </div>
       <p class="mb-2">{{ order.description|truncatewords:20 }}</p>
       <div class="d-flex justify-content-between align-items-center">
