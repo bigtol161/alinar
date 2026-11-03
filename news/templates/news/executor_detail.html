@@ -38,6 +38,9 @@
     {% if executor.city %}
       <span class="ya-chip">{{ executor.city.name }}</span>
     {% endif %}
+    {% if executor.specialty %}
+      <span class="ya-chip">{{ executor.specialty }}</span>
+    {% endif %}
 
     {% if executor.done_count %}
       <div class="mt-1">
@@ -49,6 +52,11 @@
       {{ executor.name }}
     </h1>
 
+    {% if executor.price_from %}
+      <div class="mb-3">
+        <span class="badge bg-warning text-dark">Цена от {{ executor.price_from }} руб.</span>
+      </div>
+    {% endif %}
     {% if executor.services.all %}
       <div class="d-flex flex-wrap gap-2 mb-4">
         {% for service in executor.services.all %}
