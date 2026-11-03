@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}Дом услуг — статьи и мастера{% endblock %}</title>
+  <title>{% block title %}Дом услуг — статьи и мастера{% endblock %}{% if unread_count %} ({{ unread_count }}){% endif %}</title>
   <meta name="description" content="{% block description %}Дом услуг в Ростове-на-Дону: проверенные мастера по сантехнике и электрике, полезные статьи о ремонте и быте. Затопили соседи, нужен электрик — найдите исполнителя рядом.{% endblock %}">
   <meta property="og:site_name" content="Дом услуг">
   <meta property="og:type" content="website">
