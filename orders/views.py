@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import OrderForm, ResponseForm
@@ -8,8 +9,13 @@ from .models import Order
 
 def order_list(request):
     """Открытые заказы — видят все, включая анонимов."""
-    orders = Order.objects.filter(status='new').select_related('city', 'service')
-    return render(request, 'orders/order_list.html', {'orders': orders})
+    orders = (
+        Order.objects.filter(status='new')
+        .select_related('city', 'service')
+        .order_by('-created_at')
+    )
+    page = Paginator(orders, 10).get_page(request.GET.get('page'))
+    return render(request, 'orders/order_list.html', {'page_obj': page})
 
 
 def order_detail(request, pk):
