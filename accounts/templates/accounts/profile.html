@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Мой профиль — Дом услуг{% endblock %}
+
+{% block content %}
+
+<h1 class="mb-3" style="font-size: 1.6rem; font-weight: 800;">Мой профиль</h1>
+
+<div class="ya-card mb-3">
+  <div class="card-body p-4">
+    <div class="fw-bold">{{ user.username }}</div>
+    {% if user.email %}<div class="ya-muted small">{{ user.email }}</div>{% endif %}
+    {% if user.profile %}
+      <div class="ya-muted small mt-2">
+        {{ user.profile.get_role_display }}{% if user.profile.city %} · {{ user.profile.city }}{% endif %}{% if user.profile.phone %} · {{ user.profile.phone }}{% endif %}
+      </div>
+      {% if user.profile.bio %}<div class="mt-2">{{ user.profile.bio|linebreaksbr }}</div>{% endif %}
+    {% endif %}
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-md-6">
+    <div class="ya-card h-100"><div class="card-body p-4">
+      <div class="fw-bold">Мои заказы</div>
+      <div class="ya-muted small mb-2">Размещено: {{ orders_count }}</div>
+      <a href="{% url 'orders:mine' %}" class="ya-btn text-decoration-none">Открыть</a>
+    </div></div>
+  </div>
+  <div class="col-md-6">
+    <div class="ya-card h-100"><div class="card-body p-4">
+      <div class="fw-bold">Мои заявки</div>
+      <div class="ya-muted small mb-2">Оставлено: {{ leads_count }}</div>
+      <a href="{% url 'news:my_leads' %}" class="ya-btn text-decoration-none">Открыть</a>
+    </div></div>
+  </div>
+  {% if executor %}
+  <div class="col-md-6">
+    <div class="ya-card h-100"><div class="card-body p-4">
+      <div class="fw-bold">Заявки на мою анкету</div>
+      <div class="ya-muted small mb-2">Всего: {{ executor_leads_count }} · Обработано: {{ executor_leads_done }}</div>
+      <a href="{% url 'news:executor_leads' %}" class="ya-btn text-decoration-none">Открыть</a>
+    </div></div>
+  </div>
+  {% endif %}
+  <div class="col-md-6">
+    <div class="ya-card h-100"><div class="card-body p-4">
+      <div class="fw-bold">Уведомления</div>
+      <div class="ya-muted small mb-2">Непрочитанных: {{ unread_count }}</div>
+      <a href="{% url 'orders:notifications' %}" class="ya-btn text-decoration-none">Открыть</a>
+    </div></div>
+  </div>
+</div>
+
+{% endblock %}

@@ -7,10 +7,30 @@
 """
 
 from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
+
+from news.models import Lead
+from orders.models import Notification, Order
 
 from .forms import RegisterForm
 from .rate_limit import rate_limit
+
+
+@login_required
+def profile(request):
+    """Личный кабинет: данные аккаунта и карточки всех разделов пользователя."""
+    user = request.user
+    executor = getattr(user, 'executor', None)
+    context = {
+        'orders_count': Order.objects.filter(author=user).count(),
+        'leads_count': user.leads.count(),
+        'unread_count': Notification.objects.filter(recipient=user, is_read=False).count(),
+        'executor': executor,
+        'executor_leads_count': executor.leads.count() if executor else 0,
+        'executor_leads_done': executor.leads.filter(status='done').count() if executor else 0,
+    }
+    return render(request, 'accounts/profile.html', context)
 
 
 # Не больше 3 регистраций в час с одного IP — человеку хватает с запасом.
