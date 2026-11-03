@@ -312,3 +312,112 @@ body > footer a:hover {
 #id_services input[type="checkbox"] { position: absolute; opacity: 0; pointer-events: none; }
 #id_services label { display: inline-block; padding: .35rem .8rem; border: 1px solid var(--ya-border, #ececf0); border-radius: 2rem; background: #fff; cursor: pointer; font-size: .9rem; user-select: none; }
 #id_services label:has(input:checked) { background: #ffd83d; border-color: #f5c518; font-weight: 600; }
+
+
+
+        /* Стили для карточек исполнителей */
+        
+        /* Стили для карточек исполнителей */
+        .executor-card {
+            width: 20%; /* Уменьшаем до 20% для 4 карточек */
+            margin: 0.3rem; /* Уменьшаем отступы */
+            transition: transform 0.2s;
+            box-sizing: border-box;
+            float: left; /* Добавляем float для строгого расположения */
+            clear: both; /* Очищаем обтекание */
+        }
+
+        .executor-card:hover {
+            transform: scale(1.02);
+        }
+
+        .executor-card img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        /* Адаптивные стили */
+        @media (max-width: 1200px) {
+            .executor-card {
+                width: 25%; /* Для планшетов */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .executor-card {
+                width: 45%; /* Для смартфонов */
+            }
+        }
+        
+
+        .executor-card:hover {
+            transform: scale(1.02); /* Легкое увеличение при наведении */
+        }
+
+        .executor-card img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        /* Адаптивные стили */
+        @media (max-width: 1200px) {
+            .executor-card {
+                width: 31%; /* Для планшетов */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .executor-card {
+                width: 47%; /* Для смартфонов */
+            }
+        }
+        
+
+
+        /* Стили для контейнера карточек */
+        .executor-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            padding: 1rem;
+        }
+
+        /* Стили для карточек исполнителей */
+        .executor-card {
+            width: 100%;
+            margin: 0;
+            padding: 1rem;
+            box-sizing: border-box;
+            transition: transform 0.2s;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .executor-card:hover {
+            transform: scale(1.02);
+        }
+
+        .executor-card img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        /* Адаптивные стили */
+        @media (max-width: 1200px) {
+            .executor-container {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .executor-container {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+        
