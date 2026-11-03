@@ -24,6 +24,12 @@ class Service(models.Model):
         ('cleaning', 'Уборка'),
         ('moving', 'Переезды и грузчики'),
         ('beauty', 'Красота и здоровье'),
+        ('climate', 'Климат и кондиционеры'),
+        ('appliances', 'Ремонт бытовой техники'),
+        ('handyman', 'Муж на час'),
+        ('furniture', 'Сборка мебели'),
+        ('windows', 'Окна и остекление'),
+        ('pests', 'Дезинсекция и дезинфекция'),
         ('other', 'Другое'),
     )
     rubric = models.CharField(
