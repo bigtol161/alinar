@@ -3,6 +3,7 @@ from django.db import models
 
 from core.models import City, Service
 from news.models import Executor
+from core.phones import digits_only
 
 
 class Order(models.Model):
@@ -50,6 +51,7 @@ class Order(models.Model):
     created_at = models.DateTimeField('Создано', auto_now_add=True)
 
     def save(self, *args, **kwargs):
+        self.phone = digits_only(self.phone)
         is_new = self.pk is None
         super().save(*args, **kwargs)
         if is_new and not self.number:
