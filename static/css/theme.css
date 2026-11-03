@@ -305,3 +305,10 @@ body > footer a:hover {
   background: #1a1a1a !important;
   color: #ffdb4d !important;
 }
+
+/* Услуги в анкете: чипы вместо обычного списка */
+#id_services { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem; }
+#id_services li { margin: 0; }
+#id_services input[type="checkbox"] { position: absolute; opacity: 0; pointer-events: none; }
+#id_services label { display: inline-block; padding: .35rem .8rem; border: 1px solid var(--ya-border, #ececf0); border-radius: 2rem; background: #fff; cursor: pointer; font-size: .9rem; user-select: none; }
+#id_services label:has(input:checked) { background: #ffd83d; border-color: #f5c518; font-weight: 600; }
