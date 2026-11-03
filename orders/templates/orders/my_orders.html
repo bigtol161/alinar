@@ -10,9 +10,12 @@
   <div class="ya-card mb-3">
     <div class="card-body p-4">
       <div class="d-flex justify-content-between align-items-start">
-        <h2 class="h5 mb-1">
-          <a href="{% url 'orders:detail' order.pk %}" class="text-decoration-none text-body">{{ order.title }}</a>
-        </h2>
+        <div>
+          <span class="ya-chip me-2">{{ order.number }}</span>
+          <h2 class="h5 mb-1 d-inline">
+            <a href="{% url 'orders:detail' order.pk %}" class="text-decoration-none text-body">{{ order.title }}</a>
+          </h2>
+        </div>
         <span class="badge {% if order.status == 'new' %}bg-warning text-dark{% else %}bg-secondary{% endif %}">
           {{ order.get_status_display }}
         </span>
