@@ -76,12 +76,13 @@ def order_create(request):
 @login_required
 def my_orders(request):
     """Заказы текущего пользователя."""
-    orders = (
-        request.user.orders.select_related('city', 'service')
-        .order_by('-created_at')
-    )
+    q = request.GET.get('q', '').strip()
+    orders = request.user.orders.select_related('city', 'service')
+    if q:
+        orders = orders.filter(title__icontains=q)
+    orders = orders.order_by('-created_at')
     page = Paginator(orders, 10).get_page(request.GET.get('page'))
-    return render(request, 'orders/my_orders.html', {'page_obj': page})
+    return render(request, 'orders/my_orders.html', {'page_obj': page, 'q': q})
 
 
 @login_required
