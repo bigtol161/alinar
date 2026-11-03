@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Уведомления — Дом услуг{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="mb-0" style="font-size: 1.6rem; font-weight: 800;">Уведомления</h1>
+  {% if unread_count %}
+    <form method="post" action="{% url 'orders:notifications_read' %}">
+      {% csrf_token %}
+      <button type="submit" class="btn ya-btn">Отметить все прочитанными</button>
+    </form>
+  {% endif %}
+</div>
+
+{% for note in page_obj %}
+  <div class="ya-card mb-3 {% if not note.is_read %}border border-primary{% endif %}">
+    <div class="card-body p-4">
+      <div class="d-flex justify-content-between align-items-start mb-1">
+        <div>
+          <div class="fw-bold">
+            {% if not note.is_read %}<span class="badge bg-danger me-1">новое</span>{% endif %}
+            Отклик на «{{ note.order.title }}»
+          </div>
+          <div class="ya-muted small">
+            Мастер: {{ note.response.executor }}
+            {% if note.response.price %} · Предложение: {{ note.response.price }} руб.{% endif %}
+          </div>
+          {% if note.response.message %}
+            <div class="mt-2">{{ note.response.message|linebreaksbr }}</div>
+          {% endif %}
+          <div class="ya-muted small mt-2">{{ note.created_at|date:"d.m.Y H:i" }}</div>
+        </div>
+        <a href="{% url 'orders:detail' note.order.pk %}" class="ya-btn text-decoration-none">К заказу</a>
+      </div>
+    </div>
+  </div>
+{% empty %}
+  <p class="ya-muted">Уведомлений пока нет — как только на ваши заявки придут отклики, они появятся здесь.</p>
+{% endfor %}
+
+{% if page_obj.paginator.num_pages > 1 %}
+  <nav class="mt-4">
+    <ul class="pagination">
+      {% if page_obj.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">←</a></li>
+      {% endif %}
+      <li class="page-item disabled"><span class="page-link">{{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span></li>
+      {% if page_obj.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">→</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+{% endif %}
+
+{% endblock %}

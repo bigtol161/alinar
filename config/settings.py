@@ -70,6 +70,7 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
+                'orders.context_processors.unread_notifications',
                 'django.contrib.messages.context_processors.messages',
             ],
         },

@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from .forms import OrderForm, ResponseForm
 from accounts.rate_limit import rate_limit
 from core.models import City, Service
-from .models import Order
+from .models import Notification, Order
 
 
 def order_list(request):
@@ -123,6 +123,25 @@ def my_orders(request):
 
 
 @login_required
+@login_required
+def notifications(request):
+    """Список уведомлений текущего пользователя."""
+    notes = (
+        request.user.notifications
+        .select_related('order', 'response', 'response__executor')
+        .order_by('-created_at')
+    )
+    page = Paginator(notes, 20).get_page(request.GET.get('page'))
+    return render(request, 'orders/notifications.html', {'page_obj': page})
+
+
+@login_required
+def notifications_read(request):
+    """Отметить все уведомления пользователя прочитанными."""
+    request.user.notifications.filter(is_read=False).update(is_read=True)
+    return redirect('orders:notifications')
+
+
 def order_close(request, pk):
     """Закрыть заказ может только его автор."""
     order = get_object_or_404(Order, pk=pk)
@@ -155,6 +174,11 @@ def order_respond(request, pk):
             response.order = order
             response.executor = executor
             response.save()
+            Notification.objects.create(
+                recipient=order.author,
+                order=order,
+                response=response,
+            )
             return redirect('orders:detail', pk=order.pk)
     else:
         form = ResponseForm()

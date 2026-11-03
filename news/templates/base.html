@@ -27,6 +27,9 @@
       {% if user.is_authenticated %}
         <a href="{% url 'news:my_leads' %}" class="text-decoration-none text-body">Мои заявки</a>
         <a href="{% url 'orders:list' %}" class="text-decoration-none text-body">Заказы</a>
+        <a href="{% url 'orders:notifications' %}" class="text-decoration-none text-body">
+          Уведомления{% if unread_count %} <span class="badge rounded-pill bg-danger">{{ unread_count }}</span>{% endif %}
+        </a>
       {% endif %}
       {% if user.is_authenticated %}
         <span class="text-body">Привет, {{ user.username }}</span>
@@ -61,6 +64,9 @@
         <a href="{% url 'news:executor_list' %}" class="text-decoration-none text-body">Исполнители</a>
       {% if user.is_authenticated %}
         <a href="{% url 'news:my_leads' %}" class="text-decoration-none text-body">Мои заявки</a>
+        <a href="{% url 'orders:notifications' %}" class="text-decoration-none text-body">
+          Уведомления{% if unread_count %} <span class="badge rounded-pill bg-danger">{{ unread_count }}</span>{% endif %}
+        </a>
       {% endif %}
       {% if user.is_authenticated %}
         <span class="text-body">Привет, {{ user.username }}</span>

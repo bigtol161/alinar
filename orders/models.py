@@ -106,3 +106,39 @@ class Response(models.Model):
 
     def __str__(self):
         return f'{self.executor.name} → {self.order.title}'
+
+
+from django.conf import settings
+
+
+class Notification(models.Model):
+    """Уведомление автору заказа о новом отклике."""
+
+    recipient = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        verbose_name='Кому',
+        on_delete=models.CASCADE,
+        related_name='notifications',
+    )
+    order = models.ForeignKey(
+        Order,
+        verbose_name='Заказ',
+        on_delete=models.CASCADE,
+        related_name='notifications',
+    )
+    response = models.ForeignKey(
+        Response,
+        verbose_name='Отклик',
+        on_delete=models.CASCADE,
+        related_name='+',
+    )
+    is_read = models.BooleanField('Прочитано', default=False)
+    created_at = models.DateTimeField('Создано', auto_now_add=True)
+
+    class Meta:
+        ordering = ('-created_at',)
+        verbose_name = 'Уведомление'
+        verbose_name_plural = 'Уведомления'
+
+    def __str__(self):
+        return f'Отклик на «{self.order.title}» для {self.recipient}'
