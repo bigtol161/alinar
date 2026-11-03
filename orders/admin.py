@@ -6,16 +6,16 @@ from .models import Order, Response
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('title', 'city', 'service', 'budget', 'contact_name', 'phone', 'colored_status', 'author', 'created_at')
+    list_display = ('number', 'title', 'city', 'service', 'budget', 'contact_name', 'phone', 'colored_status', 'author', 'created_at')
     list_filter = ('status', 'city', 'service')
-    search_fields = ('title', 'description', 'contact_name', 'phone')
+    search_fields = ('number', 'title', 'description', 'contact_name', 'phone')
     readonly_fields = ('created_at',)
     list_per_page = 30
 
     @admin.display(description='Статус', ordering='status')
     def colored_status(self, obj):
         colors = {
-            'open': '#b45309',
+            'new': '#b45309',
             'in_progress': '#1d4ed8',
             'done': '#15803d',
             'closed': '#6b7280',

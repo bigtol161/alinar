@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load ds_tags %}
+
 {% block title %}Заказы — Дом услуг{% endblock %}
 
 {% block content %}
@@ -15,9 +17,12 @@
   <div class="ya-card mb-3">
     <div class="card-body p-4">
       <div class="d-flex justify-content-between align-items-start">
-        <h2 class="h5 mb-1">
-          <a href="{% url 'orders:detail' order.pk %}" class="text-decoration-none text-body">{{ order.title }}</a>
-        </h2>
+        <div>
+          <span class="ya-chip me-2">{{ order.number }}</span>
+          <h2 class="h5 mb-1 d-inline">
+            <a href="{% url 'orders:detail' order.pk %}" class="text-decoration-none text-body">{{ order.title }}</a>
+          </h2>
+        </div>
         {% if order.budget %}<span class="badge bg-warning text-dark">бюджет {{ order.budget }} руб.</span>{% endif %}
       </div>
       <div class="ya-muted small mb-2">
@@ -25,7 +30,7 @@
       </div>
       <p class="mb-2">{{ order.description|truncatewords:20 }}</p>
       <div class="d-flex justify-content-between align-items-center">
-        <div class="small">Контакт: {{ order.contact_name }}, тел. {{ order.phone }}</div>
+        <div class="small">Контакт: {{ order.contact_name }}, тел. <a href="tel:{{ order.phone|dial }}" class="text-decoration-none">{{ order.phone|phone }}</a></div>
         <a href="{% url 'orders:detail' order.pk %}" class="ya-btn text-decoration-none">Подробнее</a>
       </div>
     </div>

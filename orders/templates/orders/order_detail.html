@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load ds_tags %}
+
 {% block title %}{{ order.title }} — Дом услуг{% endblock %}
 
 {% block content %}
@@ -7,7 +9,10 @@
 <div class="ya-card mb-4">
   <div class="card-body p-4">
     <div class="d-flex justify-content-between align-items-start">
-      <h1 class="h3 mb-1">{{ order.title }}</h1>
+      <div>
+        <span class="ya-chip me-2">{{ order.number }}</span>
+        <h1 class="h3 mb-1 d-inline">{{ order.title }}</h1>
+      </div>
       <span class="badge {% if order.status == 'new' %}bg-warning text-dark{% else %}bg-secondary{% endif %}">
         {{ order.get_status_display }}
       </span>
@@ -18,7 +23,7 @@
       · {{ order.created_at|date:"d.m.Y H:i" }}
     </div>
     <p class="mb-2">{{ order.description|linebreaksbr }}</p>
-    <div class="small">Контакт: {{ order.contact_name }}</div>
+    <div class="small">Контакт: {{ order.contact_name }}, тел. <a href="tel:{{ order.phone|dial }}" class="text-decoration-none">{{ order.phone|phone }}</a></div>
 
     {% if is_author and order.status == 'new' %}
       <form method="post" action="{% url 'orders:close' order.pk %}" class="mt-3">
