@@ -37,6 +37,7 @@ class Order(models.Model):
     )
     contact_name = models.CharField('Как к вам обращаться', max_length=100)
     phone = models.CharField('Телефон', max_length=32)
+    number = models.CharField('Номер заявки', max_length=16, unique=True, blank=True, editable=False)
     status = models.CharField('Статус', max_length=16, choices=STATUS_CHOICES, default='new')
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -47,6 +48,13 @@ class Order(models.Model):
         blank=True,
     )
     created_at = models.DateTimeField('Создано', auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        is_new = self.pk is None
+        super().save(*args, **kwargs)
+        if is_new and not self.number:
+            self.number = 'DS-{:02d}-{:05d}'.format(self.created_at.year % 100, self.pk)
+            super().save(update_fields=['number'])
 
     class Meta:
         ordering = ('-created_at',)
