@@ -23,7 +23,11 @@
       · {{ order.created_at|date:"d.m.Y H:i" }}
     </div>
     <p class="mb-2">{{ order.description|linebreaksbr }}</p>
-    <div class="small">Контакт: {{ order.contact_name }}, тел. <a href="tel:{{ order.phone|dial }}" class="text-decoration-none">{{ order.phone|phone }}</a></div>
+    {% if user.is_authenticated %}
+      <div class="small">Контакт: {{ order.contact_name }}, тел. <a href="tel:{{ order.phone|dial }}" class="text-decoration-none">{{ order.phone|phone }}</a></div>
+    {% else %}
+      <div class="small ya-muted">Контакт заказчика виден зарегистрированным пользователям — <a href="{% url 'login' %}" class="text-decoration-none">войти</a></div>
+    {% endif %}
 
     {% if is_author and order.status == 'new' %}
       <form method="post" action="{% url 'orders:close' order.pk %}" class="mt-3">
