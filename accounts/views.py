@@ -63,6 +63,18 @@ def register(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
+            # Анкета исполнителя создаётся сразу, но неактивной —
+            # на витрине появится после включения админом («Активен»).
+            from django.utils.text import slugify
+            from news.models import Executor
+            base_slug = slugify(user.username) or 'master'
+            slug, n = base_slug, 2
+            while Executor.objects.filter(slug=slug).exists():
+                slug = f'{base_slug}-{n}'
+                n += 1
+            Executor.objects.create(
+                user=user, name=user.username, slug=slug, is_active=False,
+            )
             login(request, user)
             return redirect('news:home')
     else:
