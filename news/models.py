@@ -4,21 +4,14 @@ from django.db import models
 from django.db import models
 from django.utils.text import slugify
 
+from core.models import Service
+
 
 class Article(models.Model):
-    RUBRIC_CHOICES = (
-        ('repair', 'Ремонт'),
-        ('plumbing', 'Сантехника'),
-        ('electrics', 'Электрика'),
-        ('cleaning', 'Уборка'),
-        ('moving', 'Переезды и грузчики'),
-        ('beauty', 'Красота и здоровье'),
-        ('other', 'Другое'),
-    )
 
     title = models.CharField('Заголовок', max_length=200)
     slug = models.SlugField('Адрес страницы', max_length=220, unique=True)
-    rubric = models.CharField('Рубрика', max_length=20, choices=RUBRIC_CHOICES, default='other')
+    rubric = models.CharField('Рубрика', max_length=20, choices=Service.RUBRIC_CHOICES, default='other')
     city = models.ForeignKey(
         'core.City',
         verbose_name='Город',
@@ -59,7 +52,7 @@ class Article(models.Model):
         super().save(*args, **kwargs)
 
 
-from core.models import City, Service
+from core.models import Service, City, Service
 
 
 class Executor(models.Model):
