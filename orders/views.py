@@ -148,6 +148,16 @@ def order_close(request, pk):
     if order.author_id == request.user.pk:
         order.status = 'closed'
         order.save(update_fields=('status',))
+        for resp in order.responses.select_related('executor'):
+            user = getattr(resp.executor, 'user', None)
+            if user is None:
+                continue
+            Notification.objects.get_or_create(
+                kind=Notification.KIND_CLOSED,
+                recipient=user,
+                response=resp,
+                defaults={'order': order},
+            )
     return redirect('orders:mine')
 
 

@@ -21,14 +21,22 @@
         <div>
           <div class="fw-bold">
             {% if not note.is_read %}<span class="badge bg-danger me-1">новое</span>{% endif %}
-            Отклик на «{{ note.order.title }}»
+            {% if note.kind == 'closed' %}
+              Заказ «{{ note.order.title }}» закрыт автором
+            {% else %}
+              Новый отклик на «{{ note.order.title }}»
+            {% endif %}
           </div>
-          <div class="ya-muted small">
-            Мастер: {{ note.response.executor }}
-            {% if note.response.price %} · Предложение: {{ note.response.price }} руб.{% endif %}
-          </div>
-          {% if note.response.message %}
-            <div class="mt-2">{{ note.response.message|linebreaksbr }}</div>
+          {% if note.kind == 'closed' %}
+            <div class="ya-muted small">Ваш отклик учтён — заявка закрыта.</div>
+          {% else %}
+            <div class="ya-muted small">
+              Мастер: {{ note.response.executor }}
+              {% if note.response.price %} · Предложение: {{ note.response.price }} руб.{% endif %}
+            </div>
+            {% if note.response.message %}
+              <div class="mt-2">{{ note.response.message|linebreaksbr }}</div>
+            {% endif %}
           {% endif %}
           <div class="ya-muted small mt-2">{{ note.created_at|date:"d.m.Y H:i" }}</div>
         </div>

@@ -126,11 +126,25 @@ class Notification(models.Model):
         on_delete=models.CASCADE,
         related_name='notifications',
     )
+    KIND_RESPONSE = 'response'
+    KIND_CLOSED = 'closed'
+    KIND_CHOICES = (
+        (KIND_RESPONSE, 'Новый отклик'),
+        (KIND_CLOSED, 'Заказ закрыт'),
+    )
+    kind = models.CharField(
+        'Тип',
+        max_length=20,
+        choices=KIND_CHOICES,
+        default=KIND_RESPONSE,
+    )
     response = models.ForeignKey(
         Response,
         verbose_name='Отклик',
         on_delete=models.CASCADE,
         related_name='+',
+        null=True,
+        blank=True,
     )
     is_read = models.BooleanField('Прочитано', default=False)
     created_at = models.DateTimeField('Создано', auto_now_add=True)
