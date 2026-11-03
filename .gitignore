@@ -17,3 +17,4 @@ __pycache__/
 # Служебное
 *.log
 .DS_Store
+local_secrets.py
