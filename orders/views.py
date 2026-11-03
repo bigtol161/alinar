@@ -8,14 +8,15 @@ from .models import Order
 
 
 def order_list(request):
-    """Открытые заказы — видят все, включая анонимов."""
+    """Список заказов: активные по умолчанию, закрытые по ?status=closed."""
+    status = 'closed' if request.GET.get('status') == 'closed' else 'new'
     orders = (
-        Order.objects.filter(status='new')
+        Order.objects.filter(status=status)
         .select_related('city', 'service')
         .order_by('-created_at')
     )
     page = Paginator(orders, 10).get_page(request.GET.get('page'))
-    return render(request, 'orders/order_list.html', {'page_obj': page})
+    return render(request, 'orders/order_list.html', {'page_obj': page, 'status': status})
 
 
 def order_detail(request, pk):
