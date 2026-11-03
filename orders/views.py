@@ -83,6 +83,7 @@ def order_close(request, pk):
 
 
 @login_required
+@rate_limit('response', limit=20, per=3600)
 def order_respond(request, pk):
     """Откликнуться может только мастер с привязанной анкетой,
     на открытый заказ, чужой и один раз."""
