@@ -8,7 +8,14 @@
 
 <div class="ya-card mb-3">
   <div class="card-body p-4">
-    <div class="fw-bold">{{ user.username }}</div>
+    <div class="d-flex align-items-center gap-3 mb-2">
+      {% if user.profile and user.profile.avatar %}
+        <img src="{{ user.profile.avatar.url }}" alt="Аватар" style="width:56px;height:56px;border-radius:50%;object-fit:cover;">
+      {% else %}
+        <div style="width:56px;height:56px;border-radius:50%;background:#f0f0f4;color:#8a8a93;font-size:1.5rem;font-weight:800;display:flex;align-items:center;justify-content:center;">{{ user.username|first|upper }}</div>
+      {% endif %}
+      <div class="fw-bold">{{ user.username }}</div>
+    </div>
     {% if user.email %}<div class="ya-muted small">{{ user.email }}</div>{% endif %}
     {% if user.profile %}
       <div class="ya-muted small mt-2">
