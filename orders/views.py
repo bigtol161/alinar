@@ -140,6 +140,18 @@ def notifications(request):
 
 
 @login_required
+def notification_read(request, pk):
+    """Отметить одно уведомление прочитанным (только POST, только своё)."""
+    if request.method != 'POST':
+        return redirect('orders:notifications')
+    note = get_object_or_404(Notification, pk=pk)
+    if note.recipient_id == request.user.pk and not note.is_read:
+        note.is_read = True
+        note.save(update_fields=('is_read',))
+    return redirect('orders:notifications')
+
+
+@login_required
 def notifications_read(request):
     """Отметить все уведомления пользователя прочитанными (только POST)."""
     if request.method != 'POST':

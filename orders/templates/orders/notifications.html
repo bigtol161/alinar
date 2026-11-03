@@ -49,11 +49,19 @@
           {% endif %}
           <div class="ya-muted small mt-2">{{ note.created_at|date:"d.m.Y H:i" }}</div>
         </div>
-        {% if note.kind == 'lead' %}
-          <a href="{% url 'news:executor_leads' %}" class="ya-btn text-decoration-none">К заявкам</a>
-        {% else %}
-          <a href="{% url 'orders:detail' note.order.pk %}" class="ya-btn text-decoration-none">К заказу</a>
-        {% endif %}
+        <div class="d-flex flex-column align-items-end gap-2">
+          {% if note.kind == 'lead' %}
+            <a href="{% url 'news:executor_leads' %}" class="ya-btn text-decoration-none">К заявкам</a>
+          {% else %}
+            <a href="{% url 'orders:detail' note.order.pk %}" class="ya-btn text-decoration-none">К заказу</a>
+          {% endif %}
+          {% if not note.is_read %}
+            <form method="post" action="{% url 'orders:notification_read' note.pk %}">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-sm btn-outline-secondary">Прочитано</button>
+            </form>
+          {% endif %}
+        </div>
       </div>
     </div>
   </div>

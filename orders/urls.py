@@ -13,4 +13,5 @@ urlpatterns = [
     path('<int:pk>/close/', views.order_close, name='close'),
     path('notifications/', views.notifications, name='notifications'),
     path('notifications/read/', views.notifications_read, name='notifications_read'),
+    path('notifications/<int:pk>/read/', views.notification_read, name='notification_read'),
 ]
