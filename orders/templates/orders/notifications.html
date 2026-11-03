@@ -23,12 +23,21 @@
             {% if not note.is_read %}<span class="badge bg-danger me-1">новое</span>{% endif %}
             {% if note.kind == 'closed' %}
               Заказ «{{ note.order.title }}» закрыт автором
+            {% elif note.kind == 'lead' %}
+              Новая заявка на вашу анкету
             {% else %}
               Новый отклик на «{{ note.order.title }}»
             {% endif %}
           </div>
           {% if note.kind == 'closed' %}
             <div class="ya-muted small">Ваш отклик учтён — заявка закрыта.</div>
+          {% elif note.kind == 'lead' %}
+            <div class="ya-muted small">
+              От: {{ note.lead.name }} · {{ note.lead.phone }}
+            </div>
+            {% if note.lead.message %}
+              <div class="mt-2">{{ note.lead.message|linebreaksbr }}</div>
+            {% endif %}
           {% else %}
             <div class="ya-muted small">
               Мастер: {{ note.response.executor }}
@@ -40,7 +49,11 @@
           {% endif %}
           <div class="ya-muted small mt-2">{{ note.created_at|date:"d.m.Y H:i" }}</div>
         </div>
-        <a href="{% url 'orders:detail' note.order.pk %}" class="ya-btn text-decoration-none">К заказу</a>
+        {% if note.kind == 'lead' %}
+          <a href="{% url 'news:executor_leads' %}" class="ya-btn text-decoration-none">К заявкам</a>
+        {% else %}
+          <a href="{% url 'orders:detail' note.order.pk %}" class="ya-btn text-decoration-none">К заказу</a>
+        {% endif %}
       </div>
     </div>
   </div>

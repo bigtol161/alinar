@@ -125,12 +125,24 @@ class Notification(models.Model):
         verbose_name='Заказ',
         on_delete=models.CASCADE,
         related_name='notifications',
+        null=True,
+        blank=True,
+    )
+    lead = models.ForeignKey(
+        'news.Lead',
+        verbose_name='Заявка',
+        on_delete=models.CASCADE,
+        related_name='+',
+        null=True,
+        blank=True,
     )
     KIND_RESPONSE = 'response'
     KIND_CLOSED = 'closed'
+    KIND_LEAD = 'lead'
     KIND_CHOICES = (
         (KIND_RESPONSE, 'Новый отклик'),
         (KIND_CLOSED, 'Заказ закрыт'),
+        (KIND_LEAD, 'Новая заявка'),
     )
     kind = models.CharField(
         'Тип',

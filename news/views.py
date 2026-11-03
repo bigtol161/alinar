@@ -7,6 +7,7 @@ from core.models import City, Service
 from orders.models import Order
 from .forms import LeadForm
 from accounts.rate_limit import rate_limit
+from orders.models import Notification
 from .models import Article, Executor, Lead
 
 import logging
@@ -141,6 +142,13 @@ def executor_detail(request, slug):
             if request.user.is_authenticated:
                 lead.owner = request.user
             lead.save()
+            executor_user = getattr(executor, 'user', None)
+            if executor_user is not None:
+                Notification.objects.create(
+                    kind=Notification.KIND_LEAD,
+                    recipient=executor_user,
+                    lead=lead,
+                )
             return redirect('news:executor_detail', slug=executor.slug)
     else:
         form = LeadForm()
