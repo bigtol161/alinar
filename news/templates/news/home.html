@@ -88,6 +88,12 @@
   {# Крупный «продающий» заголовок над выбором услуг — как на Яндекс.Услугах и Профи.ру #}
   <h2 class="mb-1" style="font-size: 1.5rem; font-weight: 800;">Найдите мастера в вашем городе</h2>
   <p class="ya-muted small mb-2">Выберите услугу — покажем анкеты исполнителей:</p>
+  <div class="d-flex flex-wrap gap-2 mb-3">
+    <a href="?" class="ya-chip text-decoration-none{% if not current_rubric %} is-active{% endif %}">Все</a>
+    {% for code, title in rubrics %}
+      <a href="?rubric={{ code }}" class="ya-chip text-decoration-none{% if current_rubric == code %} is-active{% endif %}">{{ title }}</a>
+    {% endfor %}
+  </div>
   <div class="d-flex flex-wrap gap-2">
     {% for s in popular_services %}
       <a href="{% url 'news:executor_list' %}?service={{ s.pk }}"

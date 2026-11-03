@@ -300,3 +300,8 @@ body > footer a:hover {
   border-color: #f5c900;
   transform: translateY(-1px);
 }
+
+.rubric-tabs .ya-chip.is-active {
+  background: #1a1a1a !important;
+  color: #ffdb4d !important;
+}

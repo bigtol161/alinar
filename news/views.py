@@ -25,11 +25,15 @@ def home(request):
         )
         .filter(num_articles__gt=0)
     )
+    current_rubric = request.GET.get('rubric') or ''
     popular_services = (
         Service.objects
         .annotate(num_executors=Count('executors', filter=Q(executors__is_active=True)))
-        .filter(num_executors__gt=0)[:8]
+        .filter(num_executors__gt=0)
     )
+    if current_rubric:
+        popular_services = popular_services.filter(rubric=current_rubric)
+    popular_services = popular_services[:8]
     fresh_orders = (
         Order.objects.filter(status='new')
         .select_related('city', 'service')[:3]
@@ -38,6 +42,8 @@ def home(request):
         'articles': articles,
         'cities': cities,
         'popular_services': popular_services,
+        'rubrics': Service.RUBRIC_CHOICES,
+        'current_rubric': current_rubric,
         'fresh_orders': fresh_orders,
         'total': Article.objects.filter(is_published=True).count(),
         'masters': Executor.objects.filter(is_active=True).count(),
