@@ -46,7 +46,7 @@ class ArticleAdmin(admin.ModelAdmin):
 
 @admin.register(Executor)
 class ExecutorAdmin(admin.ModelAdmin):
-    list_display = ('name', 'specialty', 'city', 'price_from', 'phone', 'is_active', 'leads_count', 'created_at')
+    list_display = ('photo_thumb', 'name', 'specialty', 'city', 'price_from', 'phone', 'is_active', 'leads_count', 'created_at')
     list_filter = ('city', 'services', 'is_active')
     search_fields = ('name', 'specialty', 'phone', 'description')
     fields = ('name', 'slug', 'specialty', 'city', 'services', 'photo', 'price_from', 'phone', 'description', 'user', 'is_active')
@@ -59,6 +59,15 @@ class ExecutorAdmin(admin.ModelAdmin):
     @admin.display(description='Заявок', ordering='num_leads')
     def leads_count(self, obj):
         return obj.num_leads
+
+    @admin.display(description='Фото')
+    def photo_thumb(self, obj):
+        if obj.photo:
+            return format_html(
+                '<img src="{}" style="height:40px;width:40px;border-radius:50%;object-fit:cover;">',
+                obj.photo.url,
+            )
+        return '—'
 
 
 @admin.register(Lead)

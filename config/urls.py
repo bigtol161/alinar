@@ -37,3 +37,10 @@ from django.views.generic import TemplateView
 urlpatterns += [
     path('privacy/', TemplateView.as_view(template_name='news/privacy.html'), name='privacy'),
 ]
+
+# Раздача медиа-файлов в режиме отладки
+from django.conf import settings
+from django.conf.urls.static import static
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
