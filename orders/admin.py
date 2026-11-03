@@ -8,6 +8,8 @@ from .models import Order, Response
 class OrderAdmin(admin.ModelAdmin):
     list_display = ('number', 'title', 'city', 'service', 'budget', 'contact_name', 'phone', 'colored_status', 'author', 'created_at')
     list_filter = ('status', 'city', 'service')
+    date_hierarchy = 'created_at'
+    ordering = ('-created_at',)
     search_fields = ('number', 'title', 'description', 'contact_name', 'phone')
     readonly_fields = ('created_at',)
     list_per_page = 30
