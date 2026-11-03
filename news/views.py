@@ -73,7 +73,7 @@ def article_list(request):
 
     context = {
         'articles': qs,
-        'rubrics': [{'value': value, 'label': label} for value, label in Article.RUBRIC_CHOICES],
+        'rubrics': [{'value': value, 'label': label} for value, label in Service.RUBRIC_CHOICES],
         'rubric': rubric,
         'query': query,
     }
