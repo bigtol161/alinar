@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import OrderForm, ResponseForm
 from accounts.rate_limit import rate_limit
+from core.models import City, Service
 from .models import Order
 
 
@@ -12,12 +13,32 @@ def order_list(request):
     поиск по названию через ?q=."""
     status = 'closed' if request.GET.get('status') == 'closed' else 'new'
     q = request.GET.get('q', '').strip()
+    city_id = request.GET.get('city', '')
+    service_id = request.GET.get('service', '')
     orders = Order.objects.filter(status=status).select_related('city', 'service')
     if q:
         orders = orders.filter(title__icontains=q)
+    if city_id.isdigit():
+        orders = orders.filter(city_id=city_id)
+    if service_id.isdigit():
+        orders = orders.filter(service_id=service_id)
     orders = orders.order_by('-created_at')
     page = Paginator(orders, 10).get_page(request.GET.get('page'))
-    return render(request, 'orders/order_list.html', {'page_obj': page, 'status': status, 'q': q})
+
+    qs = request.GET.copy()
+    qs.pop('page', None)
+    qs.pop('status', None)
+    base_qs = qs.urlencode()
+    qs.pop('q', None)
+    base_qs_nostatus = qs.urlencode()
+
+    context = {
+        'page_obj': page, 'status': status, 'q': q,
+        'base_qs': base_qs, 'base_qs_nostatus': base_qs_nostatus,
+        'cities': City.objects.all().order_by('name'),
+        'services': Service.objects.all().order_by('name'),
+    }
+    return render(request, 'orders/order_list.html', context)
 
 
 def order_detail(request, pk):
